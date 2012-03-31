@@ -32,9 +32,7 @@
           <a class="brand" href="#">Bill 'em All</a>
           <div class="nav-collapse">
             <ul class="nav">
-              <li {% block menu_overview %}{% endblock %}><a href="/">Overview</a></li>
-              <li {% block menu_account %}{% endblock %}><a href="/account">Account</a></li>
-              <li {% block menu_contact %}{% endblock %}><a href="/contact">Contact</a></li>
+              {% block nav %}{% endblock %}
             </ul>
           </div><!--/.nav-collapse -->
         </div>

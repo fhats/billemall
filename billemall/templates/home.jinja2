@@ -1,13 +1,17 @@
-{% extends "base.jinja2" %}
+{% extends "base_loggedin.jinja2" %}
 
 {% block menu_overview %}class="active"{% endblock %}
 
 {% block content %}
-<h1>Home</h1>
+<h1>Overview</h1>
 
 <div class="row-fluid summary-row">
   <div class="span7"><div class="name">Fred Hatfull</div></div>
   <div class="span3"><div class="amount">$3,000</div></div>
-  <div class="span2"><div class="add-bill">Add bill</div></div>
+  <div class="span2">
+    <a href="/fred_hatfull/add_bill">
+      <div class="add-bill">Add bill</div>
+    </a>
+  </div>
 </div>
 {% endblock %}

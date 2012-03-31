@@ -20,6 +20,9 @@ body {
 }
 
 .summary-row .add-bill {
-  background-color: #eef;
   text-align: center;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  border: 1px solid #aaa;
 }
