@@ -1,0 +1,25 @@
+body {
+  font-size: 14px;
+}
+
+.summary-row {
+  margin-top: 10px;
+  margin-bottom: 20px;
+  min-height: 30px;
+  line-height: 30px;
+}
+
+.summary-row .name {
+  background-color: #eee;
+  padding-left: 0.5em;
+}
+
+.summary-row .amount {
+  background-color: #efe;
+  text-align: right;
+}
+
+.summary-row .add-bill {
+  background-color: #eef;
+  text-align: center;
+}
