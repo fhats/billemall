@@ -5,7 +5,7 @@ from sqlalchemy.exc import DBAPIError
 
 from .models import (
     DBSession,
-    MyModel,
+    User,
     )
 
 @view_config(route_name='login', renderer='login.jinja2')
@@ -14,7 +14,7 @@ def login(request):
 
 @view_config(route_name='overview', renderer='overview.jinja2')
 def overview(request):
-    return {"status": ok}
+    return {"status": "ok"}
 
 @view_config(route_name='add_bill', renderer='add_bill.jinja2')
 def add_bill(request):
