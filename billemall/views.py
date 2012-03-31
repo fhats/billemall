@@ -13,15 +13,11 @@ def login(request):
     return {"status": "ok"}
 
 @view_config(route_name='overview', renderer='overview.jinja2')
-def my_view(request):
-    try:
-        one = DBSession.query(MyModel).filter(MyModel.name=='one').first()
-    except DBAPIError:
-        return Response(conn_err_msg, content_type='text/plain', status_int=500)
-    return {'one':one, 'project':'billemall'}
+def overview(request):
+    return {"status": ok}
 
 @view_config(route_name='add_bill', renderer='add_bill.jinja2')
-def user_overview(request):
+def add_bill(request):
     return {"status": "ok"}
 
 @view_config(route_name='user_overview', renderer='user_overview.jinja2')
@@ -29,7 +25,7 @@ def user_overview(request):
     return {"status": "ok"}
 
 @view_config(route_name='account', renderer='account.jinja2')
-def my_view(request):
+def account(request):
     return {"status": "ok"}
 
 
