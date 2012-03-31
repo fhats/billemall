@@ -2,6 +2,12 @@ body {
   font-size: 14px;
 }
 
+.amount {
+    text-align: right;
+}
+
+/* overview */
+
 .summary-row {
   margin-top: 10px;
   margin-bottom: 20px;
@@ -16,7 +22,6 @@ body {
 
 .summary-row .amount {
   background-color: #efe;
-  text-align: right;
 }
 
 .summary-row .add-bill {
@@ -25,4 +30,25 @@ body {
   -moz-border-radius: 3px;
   border-radius: 3px;
   border: 1px solid #aaa;
+}
+
+/* user details */
+
+.running-total {
+    text-align: right;
+    color: black;
+}
+
+.history-row {
+  min-height: 30px;
+  line-height: 30px;
+  border-top: 1px solid #eee;
+}
+
+.credit {
+    color: red;
+}
+
+.debit {
+    color: green;
 }
