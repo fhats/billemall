@@ -30,6 +30,10 @@ body {
     text-align: right;
 }
 
+.add-bill-row .btn {
+    width: 100%;
+}
+
 /* user details */
 
 .running-total {
