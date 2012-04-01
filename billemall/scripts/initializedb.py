@@ -34,10 +34,10 @@ def main(argv=sys.argv):
     DBSession.configure(bind=engine)
     Base.metadata.create_all(engine)
     with transaction.manager:
-        user = User(name="Fred", email="lurkingfridge79@gmail.com", password="password")
+        user = User(name="Fred Hatfull", email="lurkingfridge79@gmail.com", password="password")
         DBSession.add(user)
 
-        other_user = User(name="Steve", email="suckawang@steveasleep.com", password="password")
+        other_user = User(name="Steve Johnson", email="suckawang@steveasleep.com", password="password")
         DBSession.add(other_user)
 
         DBSession.flush()
@@ -50,12 +50,16 @@ def main(argv=sys.argv):
         steve_holder = BillShareUserPlaceholder(user=other_user)
         DBSession.add(steve_holder)
 
+        toby_holder = BillShareUserPlaceholder(name="Toby Waite")
+        DBSession.add(toby_holder)
+
         DBSession.flush()
         DBSession.refresh(fred_holder)
         DBSession.refresh(steve_holder)
+        DBSession.refresh(toby_holder)
 
         # Add a test bill
-        bill = Bill(primary_user_id=fred_holder.id, description="Sexy times and stuff")
+        bill = Bill(primary_user_id=fred_holder.id, description="Sexy times and stuff", total=1100)
         DBSession.add(bill)
 
         DBSession.flush()
@@ -66,3 +70,6 @@ def main(argv=sys.argv):
 
         f_bs = BillShare(bill_id=bill.id, billshare_user_placeholder_id=fred_holder.id, amount=300)
         DBSession.add(f_bs)
+
+        t_bs = BillShare(bill_id=bill.id, billshare_user_placeholder_id=toby_holder.id, amount=500)
+        DBSession.add(t_bs)
