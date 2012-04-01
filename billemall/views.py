@@ -159,6 +159,8 @@ def add_bill(request):
         if not isinstance(request_body, list):
             return HTTPBadRequest("Expected type list")
         
+        bill_total = sum([entry['amount'] for entry in request_body])
+
         # Create the Bill
         # This shit is all done in a single transaction in order to have nice ROLLBACK
         # semantics if any one of these transactions fails.
