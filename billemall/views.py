@@ -146,13 +146,14 @@ def overview(request):
 
 @view_config(route_name='add_bill', renderer='add_bill.jinja2')
 def add_bill(request):
+    print request.params
     if 'user' not in request.session:
         return HTTPFound(location="/")
 
     if request.method == "POST":
         # We expect the request body to just be a list of {name:person, amount:xxx}
         try:
-            request_body = josn.loads(request.params['people'])
+            request_body = json.loads(request.params['people'])
         except (KeyError, ValueError):
             return HTTPBadRequest("Poorly formatted request")
         

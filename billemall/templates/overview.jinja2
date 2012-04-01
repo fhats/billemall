@@ -14,13 +14,14 @@
       <button id="add-to-bill-field-button" type="submit" class="btn">Add to bill</button>
     </form>
   </div>
-  <form class="form-inline">
+  <form class="form-inline" id="add-bill-form" action="add_bill" method="POST">
     <div class="span4" id="people">
       &nbsp;
     </div>
     <div class="span3 input-prepend amount-box">
       <span class="add-on">$</span>
       <input id="amount-field" type="text" name="amount" class="input-small" value="100">
+      <input type="hidden" name="people" id="sneaky-people">
     </div>
     <div class="span2">
       <button id="overview-add-bill-button" type="submit" class="btn">Add bill</button>

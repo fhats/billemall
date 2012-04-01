@@ -48,9 +48,8 @@
         return $(event.target).remove();
       });
     });
-    return $("#overview-add-bill-button").click(function(event) {
+    return $("#add-bill-form").submit(function(event) {
       var amounts, i, people, people_elems, person, _len;
-      event.preventDefault();
       people_elems = $(".bill-person");
       people = [];
       amounts = split_currency_string($("#amount-field")[0].value, people_elems.length);
@@ -61,9 +60,11 @@
           'name': person.textContent.substring(0, person.textContent.length - 1),
           'amount': amounts[i]
         });
-        i++;
       }
-      return console.log(window.JSON.stringify(people));
+      console.log(people);
+      console.log(window.JSON.stringify(people));
+      console.log($("#sneaky-people")[0].value);
+      return $("#sneaky-people")[0].value = window.JSON.stringify(people);
     });
   });
 
