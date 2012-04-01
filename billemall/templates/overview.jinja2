@@ -7,18 +7,25 @@
 
 <br>
 
-<form class="row-fluid add-bill-basic-form form-inline" action="add_bill">
-  <div class="span7">
-    <input type="text" class="span7" name="people" placeholder="John Smith, Jane Doe, Michael Scott">
+<div class="row-fluid add-bill-basic-form">
+  <div class="span3">
+    <form class="form-inline" action="add_person">
+      <input type="text" class="input-small" name="people" placeholder="John Smith">
+      <button type="submit" class="btn">Add to bill</button>
+    </form>
   </div>
-  <div class="span3 input-prepend amount-box">
-    <span class="add-on">$</span>
-    <input type="text" name="amount" class="input-small" placeholder="100">
-  </div>
-  <div class="span2 add-bill-button">
-    <button type="submit" class="btn">Add bill</button>
-  </div>
-</form>
+  <form class="form-inline" action="add_bill">
+    <div class="span4" id="people">
+      &nbsp;
+    </div>
+    <div class="span3 input-prepend amount-box">
+      <span class="add-on">$</span>
+      <input type="text" name="amount" class="input-small" placeholder="100">
+    </div>
+    <div class="span2 add-bill-button">
+      <button type="submit" class="btn overview-add-bill-button">Add bill</button>
+    </div>
+</div>
 
 <div class="row-fluid summary-row">
   <div class="span7"><div class="name">
@@ -26,7 +33,7 @@
   </div></div>
   <div class="span3"><div class="amount amount-positive">$3,000</div></div>
   <div class="span2 add-bill-button">
-    <a href="/add_bill?people=1">Add bill</a>
+    <a class="add-to-bill-link" data-name="Fred Hatfull">Add to bill</a>
   </div>
 </div>
 
@@ -36,7 +43,7 @@
   </div></div>
   <div class="span3"><div class="amount amount-negative">($1,700)</div></div>
   <div class="span2 add-bill-button">
-    <a href="/add_bill?people=2">Add bill</a>
+    <a class="add-to-bill-link" data-name="Toby Waite">Add to bill</a>
   </div>
 </div>
 {% endblock %}

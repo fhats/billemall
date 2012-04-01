@@ -1,5 +1,5 @@
 (function() {
-  var $, split_currency_field;
+  var $, remove_from_bill, split_currency_field;
 
   $ = jQuery;
 
@@ -28,6 +28,29 @@
       })(field));
     }
     return _results;
+  };
+
+  $ = jQuery;
+
+  $(function() {
+    return $('.add-to-bill-link').click(function(event_object) {
+      var add_elem, elem, name;
+      add_elem = event_object.target;
+      if (add_elem.getAttribute('data-can-add') !== "false") {
+        name = add_elem.getAttribute('data-name');
+        $('#people').append('<a class="person">' + name + ' </a>');
+        elem = $('#people').children().last();
+        elem.click(function(event_object) {
+          $(add_elem).show();
+          return $(event_object.target).remove();
+        });
+        return $(add_elem).hide();
+      }
+    });
+  });
+
+  remove_from_bill = function(event_object) {
+    return event_object.target;
   };
 
 }).call(this);
