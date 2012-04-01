@@ -14,19 +14,26 @@
 
 <div class="row">
   <div class="span6">
-    <form class="well" action="/login" method="POST">
+    <form class="well" action="/register" method="POST">
       <fieldset>
-        <legend>Log In</legend>
+        <legend>Register</legend>
         <div class="control-group">
-          <label class="control-label" for="email">{{ forms.login.email.label }}</label>
+          <label class="control-label" for="name">{{ forms.registration.name.label }}</label>
           <div class="controls">
-            {{ forms.login.email()|safe }}
+            {{ forms.registration.name()|safe }}
+            <p class="help-block">What your friends call you</p>
           </div>
         </div>
         <div class="control-group">
-          <label class="control-label" for="password">{{ forms.login.password.label }}</label>
+          <label class="control-label" for="email">{{ forms.registration.email.label }}</label>
           <div class="controls">
-            {{ forms.login.password()|safe }}
+            {{ forms.registration.email()|safe }}
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label" for="password">{{ forms.registration.password.label }}</label>
+          <div class="controls">
+            {{ forms.registration.password()|safe }}
           </div>
         </div>
         <div class="control-group">

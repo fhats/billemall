@@ -12,21 +12,21 @@ from .forms.registration import RegistrationForm
 from .models import DBSession, Bill, BillShare, BillShareUserPlaceholder, User
 
 
-def dump_flashed_messages(request):
-    msgs = []
-    while request.session.peek_flash():
-        msgs.append(request.session.pop_flash())
-
-    return msgs
-
-
 def login_context(request):
     login_form = LoginForm(request.params)
-    registration_form = RegistrationForm(request.params)
     return {
-        "flashed_messages": dump_flashed_messages(request),
+        "flashed_messages": request.session.pop_flash(),
         "forms": {
             "login": login_form,
+        }
+    }
+
+
+def registration_context(request):
+    registration_form = RegistrationForm(request.params)
+    return {
+        "flashed_messages": request.session.pop_flash(),
+        "forms": {
             "registration": registration_form
         }
     }
@@ -73,40 +73,37 @@ def logout(request):
     request.session.invalidate()
     return HTTPFound(location='/')
 
-@view_config(route_name='register')
+@view_config(route_name='register', renderer='register.jinja2')
 def register(request):
-    """Takes an HTTP POST and creates a user with the given information."""
+    if request.method == "POST" and 'user' not in request.session:
+        # TODO(fhats): Input validation
+        user_name = request.params['name']
+        user_email = request.params['email']
+        user_password = request.params['password']
 
-    # Redirect to login/registration if this is not a POST
-    if request.method == "POST":
-        return HTTPFound(location="/")
+        registration_form = RegistrationForm(request.params)
+        if not registration_form.validate():
+            for field, error in registration_form.errors.iteritems():
+                request.session.flash("Invalid input for field %s: %s" % (field, error))
+            return HTTPFound(location='/')
 
-    # TODO(fhats): Input validation
-    user_name = request.params['name']
-    user_email = request.params['email']
-    user_password = request.params['password']
+        # Make sure a user with that email address doesn't already exist
+        if DBSession.query(User).filter_by(email=user_email).count() > 0:
+            request.session.flash("Someone has already registered using that email!")
+            return HTTPFound(location='/')
 
-    registration_form = RegistrationForm(request.params)
-    if not registration_form.validate():
-        for field, error in registration_form.errors.iteritems():
-            request.session.flash("Invalid input for field %s: %s" % (field, error))
-        return HTTPFound(location='/')
+        # Add the user
+        with transaction.manager:
+            new_user = User(user_name, user_email, user_password)
+            DBSession.add(new_user)
 
-    # Make sure a user with that email address doesn't already exist
-    if DBSession.query(User).filter_by(email=user_email).count() > 0:
-        request.session.flash("Someone has already registered using that email!")
-        return HTTPFound(location='/')
+        added_user = DBSession.query(User).filter_by(email=user_email).first()
 
-    # Add the user
-    with transaction.manager:
-        new_user = User(user_name, user_email, user_password)
-        DBSession.add(new_user)
+        do_user_login(request, added_user)
 
-    added_user = DBSession.query(User).filter_by(email=user_email).first()
-
-    do_user_login(request, added_user)
-
-    return HTTPFound(location='/overview')
+        return HTTPFound(location='/overview')
+    else:
+        return registration_context(request)
 
 def do_user_login(request, user):
     session = request.session
