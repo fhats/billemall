@@ -12,7 +12,7 @@ $ ->
 
 
 update_currency_fields = () ->
-  if $('#auto-split')[0].checked
+  if $('#auto_split').length > 0 and $('#auto-split')[0].checked
     fields = $(".bill-share-field")
 
     values = split_currency_string($("#bill-amount-total")[0].value, fields.length)
