@@ -23,6 +23,7 @@ def main(global_config, **settings):
     config.add_route('register', '/register')
     config.add_route('overview', '/overview')
     config.add_route('add_bill', '/add_bill')
+    config.add_route('view_bill', '/bill/{id}')
     config.add_route('user_overview', '/user/{id}')
     config.add_route('account', '/account')
     config.scan()
