@@ -10,9 +10,13 @@ body {
   text-align: right;
 }
 
+p {
+  font-size: 14px;
+}
+
 /* overview */
 
-.summary-row, .add-bill-row {
+.summary-row, .add-bill-row, .view-bill-row {
   min-height: 30px;
   line-height: 30px;
   border-top: 1px solid #eee;
@@ -34,8 +38,13 @@ body {
   text-align: right;
 }
 
-.add-bill-basic-form .btn {
+.overview-add-bill-button {
   width: 100%;
+}
+
+.add-bill-basic-form {
+  min-height: 30px;
+  line-height: 30px;
 }
 
 .add-bill-basic-form .amount-box {
