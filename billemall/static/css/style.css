@@ -74,6 +74,13 @@ body {
   padding-top: 0.5em;
 }
 
+.bill-name-row input {
+  width: 100%;
+  font-size: 28px;
+  height: 30px;
+  line-height: 30px;
+}
+
 .add-bill-amount {
   text-align: right;
 }
