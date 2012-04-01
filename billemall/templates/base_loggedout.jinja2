@@ -1,0 +1,12 @@
+{% extends "base.jinja2" %}
+
+{% block nav %}
+  <ul class="nav">
+    <li {% block menu_overview %}{% endblock %}><a href="/overview">Overview</a></li>
+  </ul>
+  <form class="navbar-form pull-right" action="/login" method="POST">
+    {{ forms.login.email(class="span2", placeholder=forms.login.email.label.text) }}
+    {{ forms.login.password(class="span2", placeholder=forms.login.password.label.text) }}
+    <input type="submit" class="btn" value="Log In">
+  </form>
+{% endblock %}
