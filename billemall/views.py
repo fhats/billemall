@@ -60,6 +60,7 @@ def overview(request):
 
 @view_config(route_name='user_overview', renderer='user_overview.jinja2')
 def user_overview(request):
+    """This is all wrong."""
     if 'user' not in request.session:
         return HTTPFound(location='/')
 
@@ -68,22 +69,38 @@ def user_overview(request):
     if user_id == request.session['user']['id']:
         return HTTPFound(location='/overview')
 
-    shares = DBSession.query(BillShare).\
-        join(BillShareUserPlaceholder).\
+    # Money owed to 'me':
+    # BillShares on Bills on which I'm the primary
+    # and the other user has a share on
+    owed_by_them = DBSession.query(BillShare).\
+        join(Bill).\
         filter(
-            or_(BillShareUserPlaceholder.claimed_user_id == request.session['user']['id'],
-                BillShareUserPlaceholder.claimed_user_id == user_id)
+            and_(Bill.primary_user_id == request.session['placeholder'],
+                BillShare.billshare_user_placeholder_id == user_id)
+        ).all()
+
+    # Money owed by 'me':
+    # BillShares on Bills on which the other user is the primary
+    # and I have a share on
+    owed_to_them = DBSession.query(BillShare).\
+        join(Bill).\
+        filter(
+            and_(Bill.primary_user_id == user_id,
+                BillShare.billshare_user_placeholder_id == request.session['placeholder'])
         ).all()
 
     my_shares = [{
         "description": share.bill.description,
         "amount": share.amount,
-    } for share in shares if share.bill.primary_user_id == request.session['user']['id']]
+    } for share in owed_by_them]
 
     their_shares = [{
         "description": share.bill.description,
         "amount": share.amount,
-    } for share in shares if share.bill.primary_user_id == user_id]
+    } for share in owed_to_them if share.bill.primary_user_id == user_id]
+
+    print their_shares
+    print my_shares
 
     return {
         "my_shares": my_shares,
