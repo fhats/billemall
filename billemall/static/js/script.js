@@ -1,5 +1,5 @@
 (function() {
-  var $, remove_from_bill, split_currency_field;
+  var $, split_currency_field;
 
   $ = jQuery;
 
@@ -33,24 +33,32 @@
   $ = jQuery;
 
   $(function() {
-    return $('.add-to-bill-link').click(function(event_object) {
-      var add_elem, elem, name;
+    $('.add-to-bill-link').click(function(event_object) {
+      var add_elem, elem, name, people;
       add_elem = event_object.target;
-      if (add_elem.getAttribute('data-can-add') !== "false") {
-        name = add_elem.getAttribute('data-name');
-        $('#people').append('<a class="person">' + name + ' </a>');
-        elem = $('#people').children().last();
-        elem.click(function(event_object) {
-          $(add_elem).show();
-          return $(event_object.target).remove();
-        });
-        return $(add_elem).hide();
-      }
+      name = add_elem.getAttribute('data-name');
+      people = $('#people');
+      if (people.children().length > 0) people.append(", ");
+      people.append('<a class="person">' + name + '</a>');
+      elem = $('#people').children().last();
+      elem.click(function(event_object) {
+        $(add_elem).show();
+        return $(event_object.target).remove();
+      });
+      return $(add_elem).hide();
+    });
+    return $('#add-to-bill-field-button').click(function(event_object) {
+      var elem, field, name;
+      event_object.preventDefault();
+      field = $('#person-field')[0];
+      name = field.value;
+      field.value = '';
+      $('#people').append('<a class="person">' + name + ' </a>');
+      elem = $('#people').children().last();
+      return elem.click(function(event_object) {
+        return $(event_object.target).remove();
+      });
     });
   });
-
-  remove_from_bill = function(event_object) {
-    return event_object.target;
-  };
 
 }).call(this);
