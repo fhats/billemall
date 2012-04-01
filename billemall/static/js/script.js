@@ -1,5 +1,5 @@
 (function() {
-  var $, split_currency_field;
+  var $, commas_to_the_people, split_currency_field;
 
   $ = jQuery;
 
@@ -32,14 +32,19 @@
 
   $ = jQuery;
 
+  commas_to_the_people = function() {
+    var people;
+    people = $('#people');
+    if (people.children().length > 0) return people.append(", ");
+  };
+
   $(function() {
     $('.add-to-bill-link').click(function(event_object) {
-      var add_elem, elem, name, people;
+      var add_elem, elem, name;
       add_elem = event_object.target;
       name = add_elem.getAttribute('data-name');
-      people = $('#people');
-      if (people.children().length > 0) people.append(", ");
-      people.append('<a class="person">' + name + '</a>');
+      commas_to_the_people();
+      $("#people").append('<a class="person">' + name + '</a>');
       elem = $('#people').children().last();
       elem.click(function(event_object) {
         $(add_elem).show();
@@ -53,7 +58,8 @@
       field = $('#person-field')[0];
       name = field.value;
       field.value = '';
-      $('#people').append('<a class="person">' + name + ' </a>');
+      commas_to_the_people();
+      $('#people').append('<a class="person">' + name + '</a>');
       elem = $('#people').children().last();
       return elem.click(function(event_object) {
         return $(event_object.target).remove();

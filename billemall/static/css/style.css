@@ -42,6 +42,11 @@ p {
   width: 100%;
 }
 
+.add-bill-basic-form {
+  min-height: 30px;
+  line-height: 30px;
+}
+
 .add-bill-basic-form .amount-box {
   text-align: right;
 }
