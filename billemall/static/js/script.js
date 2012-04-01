@@ -1,5 +1,5 @@
 (function() {
-  var $, cents_to_dollar_str, currency_string_to_cents, float_to_currency_string, split_currency_field, split_currency_string, update_people;
+  var $, cents_to_dollar_str, currency_string_to_cents, split_currency_field, split_currency_string, update_people;
 
   $ = jQuery;
 
@@ -10,9 +10,18 @@
   });
 
   split_currency_field = function(src_text, target_class) {
-    var currency_strings, field, fields, i, _len, _results;
+    var currency_strings, field, fields, i, v, values, _len, _results;
     fields = $("." + target_class);
-    currency_strings = split_currency_string(src_text, fields.length);
+    values = split_currency_string(src_text, fields.length);
+    currency_strings = (function() {
+      var _i, _len, _results;
+      _results = [];
+      for (_i = 0, _len = values.length; _i < _len; _i++) {
+        v = values[_i];
+        _results.push(cents_to_dollar_str(v));
+      }
+      return _results;
+    })();
     _results = [];
     for (i = 0, _len = fields.length; i < _len; i++) {
       field = fields[i];
@@ -66,28 +75,14 @@
       person = people_elems[i];
       people.push({
         'name': person.textContent.substring(0, person.textContent.length - 1),
-        'amount': cents_from_dollar_str(amounts[i])
+        'amount': amounts[i]
       });
     }
     return $("#sneaky-people")[0].value = window.JSON.stringify(people);
   };
 
-  float_to_currency_string = function(target_value) {
-    var items, target_text;
-    target_text = target_value.toString();
-    items = target_text.split('.');
-    items[items.length] = '00';
-    items[1] = items[1] + '0';
-    items[1] = items[1][0] + items[1][2];
-    return items[0] + '.' + items[1];
-  };
-
-  currency_string_to_cents = function(currency_string) {
-    return parseFloat(currency_string, 10) * 100;
-  };
-
   split_currency_string = function(currency_string, num_fields) {
-    var diff, target_value, total, v, values, _, _i, _len, _ref, _results;
+    var diff, target_value, total, values, _, _ref;
     total = currency_string_to_cents(currency_string);
     target_value = total / num_fields;
     diff = target_value - Math.floor(target_value);
@@ -99,13 +94,11 @@
       total -= target_value;
     }
     values.push(total);
-    console.log(values);
-    _results = [];
-    for (_i = 0, _len = values.length; _i < _len; _i++) {
-      v = values[_i];
-      _results.push(cents_to_dollar_str(v));
-    }
-    return _results;
+    return values;
+  };
+
+  currency_string_to_cents = function(currency_string) {
+    return parseFloat(currency_string, 10) * 100;
   };
 
   cents_to_dollar_str = function(cents) {

@@ -7,7 +7,8 @@ $ ->
 split_currency_field = (src_text, target_class) ->
   fields = $("." + target_class)
 
-  currency_strings = split_currency_string(src_text, fields.length)
+  values = split_currency_string(src_text, fields.length)
+  currency_strings = (cents_to_dollar_str(v) for v in values)
 
   for field, i in fields
     fields[i].value = currency_strings[i]

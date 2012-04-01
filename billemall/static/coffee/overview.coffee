@@ -45,7 +45,7 @@ update_people = () ->
     for person, i in people_elems
       people.push({
         'name': person.textContent.substring(0, person.textContent.length-1),
-        'amount': cents_from_dollar_str(amounts[i])
+        'amount': amounts[i]
       })
 
     $("#sneaky-people")[0].value = window.JSON.stringify(people)
