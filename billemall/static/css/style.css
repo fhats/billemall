@@ -51,6 +51,15 @@ p {
   text-align: right;
 }
 
+.bill-person {
+  background-color: #eee;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  padding: 0.2em;
+  margin: 0.2em;
+}
+
 /* user details */
 
 .running-total {
