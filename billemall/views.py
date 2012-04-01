@@ -120,8 +120,17 @@ def view_bill(request):
     # Find the billees on this bill
     billed_users = DBSession.query(Billee).filter_by(bill_id=bill_id).all()
 
+    billees = []
+
+    for billee in billed_users:
+        billees.append({
+            "id": billee.user_id,
+            "name": billee.user.name,
+            "email": billee.user.email
+        })
+
     return {
-        "billees": billed_users
+        "billees": billees
     }
 
 @view_config(route_name='user_overview', renderer='user_overview.jinja2')
