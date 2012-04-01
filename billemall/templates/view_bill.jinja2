@@ -8,35 +8,36 @@
 
 <br>
 
-<p class="credit">You owe Fred Hatfull $100 from this bill.</p>
+{% for bill_share in billees %}
+  {% if bill_share['id'] == request.session['user']['id'] %}
+    <p class="credit">You owe {{ primary['name'] }} ${{ bill_share['amount'] }} from this bill.</p>
+  {% endif %}
+{% endfor %}
 
-<p>Fred paid $300. Responsibility is split as follows:</p>
+<p>Fred paid ${{ total }}. Responsibility is split as follows:</p>
+
+{% for bill_share in billees %}
 
 <div class="row view-bill-row">
-  <div class="span6 bill-primary">
-    Fred Hatfull (primary)
-  </div>
-  <div class="span6">
-    $100
+  {% if bill_share['id'] == primary['id'] %}
+    <div class="span6 bill-primary">
+      {{ bill_share['name'] }} (primary)
+    </div>
+  {% else %}
+    <div class="span6">
+      {{ bill_share['name'] }}
+    </div>
+  {% endif %}
+  <div class="span6 amount">
+    ${{ bill_share['amount'] }}
   </div>
 </div>
 
-<div class="row view-bill-row">
-  <div class="span6">
-    Me
-  </div>
-  <div class="span6">
-    $100
-  </div>
-</div>
+{% endfor %}
 
-<div class="row view-bill-row">
-  <div class="span6">
-    Toby Waite
-  </div>
-  <div class="span6">
-    $100
-  </div>
-</div>
+<div class="row view-bill-row-total">
+  <div class="span6">Total</div>
+  <div class="span6 amount">${{ total }}</div>
+
 
 {% endblock %}
