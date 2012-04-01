@@ -116,7 +116,15 @@ def add_bill(request):
             bill_id = bill.id
         return HTTPFound(location="/bill/%d" % bill_id)
     else:
-        return {}
+        try:
+            people = json.loads(request.params['people'])
+        except KeyError, ValueError:
+            return {}
+
+        return {
+            "people": people,
+            "amount": request.params["amount"]
+        }
 
 @view_config(route_name='view_bill', renderer='view_bill.jinja2')
 def view_bill(request):
