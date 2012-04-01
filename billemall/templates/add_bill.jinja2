@@ -44,7 +44,7 @@
     <div class="span4 add-bill-amount input-prepend">
       <span class="add-on">$</span>
       <input class="bill-share-field" type="text" class="input-small"
-      name="amount-0" value="{{ "%0.2f" % (person_dict['amount']/100) }}">
+      name="some-amount" value="{{ "%0.2f" % (person_dict['amount']/100) }}">
     </div>
     <!-- do some javascripty thing here -->
     <div class="span2 add-bill-remove-person"><a href="#">Remove</a></div>
@@ -61,7 +61,7 @@
     <div class="span4 add-bill-amount input-prepend">
       <span class="add-on">$</span>
       <input class="bill-share-field" type="text" class="input-small"
-      name="amount-0" value="0.00">
+      name="some-amount" value="0.00">
     </div>
     <!-- do some javascripty thing here -->
     <div class="span2 add-bill-remove-person"><a href="#">Remove</a></div>
@@ -74,7 +74,12 @@
       <span class="add-on">$</span>
       <input id="bill-amount-total" type="text" class="input-small"
       name="amount-dollars"
-      value="{{ amount }}">
+      {% if not amount %}
+      value="0.00"
+      {% else %}
+      value="{{ amount }}"
+      {% endif %}
+      >
     </div>
     <div class="span2 add-bill-auto-split">
       Auto-split <input type="checkbox" checked="yes" id="auto-split">
