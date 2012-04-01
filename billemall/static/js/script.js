@@ -16,7 +16,7 @@
 
   update_currency_fields = function() {
     var currency_strings, field, fields, i, name, name_child, people, row, v, values, _i, _len, _len2, _ref;
-    if ($('#auto-split')[0].checked) {
+    if ($('#auto-split').length > 0 && $('#auto-split')[0].checked) {
       fields = $(".bill-share-field");
       values = split_currency_string($("#bill-amount-total")[0].value, fields.length);
       currency_strings = (function() {
