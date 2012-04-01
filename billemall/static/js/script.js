@@ -37,8 +37,8 @@
       var add_elem, elem, name;
       add_elem = event.target;
       name = add_elem.getAttribute('data-name');
-      $("#people").append('<a class="bill-person">' + name + ' </a>');
-      elem = $('#people').children().last();
+      $("#people-container").append('<a class="bill-person">' + name + ' </a>');
+      elem = $('#people-container').children().last();
       elem.click(function(event) {
         $(add_elem).show();
         return $(event.target).remove();
@@ -52,8 +52,8 @@
       field = $('#person-field')[0];
       name = field.value;
       field.value = '';
-      $('#people').append('<a class="bill-person">' + name + ' </a>');
-      elem = $('#people').children().last();
+      $('#people-container').append('<a class="bill-person">' + name + ' </a>');
+      elem = $('#people-container').children().last();
       elem.click(function(event) {
         return $(event.target).remove();
       });
@@ -78,7 +78,7 @@
         'amount': amounts[i]
       });
     }
-    return $("#sneaky-people")[0].value = window.JSON.stringify(people);
+    return $("#people")[0].value = window.JSON.stringify(people);
   };
 
   split_currency_string = function(currency_string, num_fields) {

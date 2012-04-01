@@ -5,8 +5,8 @@ $ ->
     add_elem = event.target
     name = add_elem.getAttribute('data-name')
 
-    $("#people").append('<a class="bill-person">' + name + ' </a>')
-    elem = $('#people').children().last()
+    $("#people-container").append('<a class="bill-person">' + name + ' </a>')
+    elem = $('#people-container').children().last()
 
     elem.click (event) ->
       $(add_elem).show()
@@ -22,8 +22,8 @@ $ ->
     name = field.value
     field.value = ''
 
-    $('#people').append('<a class="bill-person">' + name + ' </a>')
-    elem = $('#people').children().last()
+    $('#people-container').append('<a class="bill-person">' + name + ' </a>')
+    elem = $('#people-container').children().last()
 
     elem.click (event) ->
       $(event.target).remove()
@@ -48,4 +48,4 @@ update_people = () ->
         'amount': amounts[i]
       })
 
-    $("#sneaky-people")[0].value = window.JSON.stringify(people)
+    $("#people")[0].value = window.JSON.stringify(people)
