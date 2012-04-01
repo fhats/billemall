@@ -3,14 +3,13 @@
 {% block menu_overview %}class="active"{% endblock %}
 
 {% block content %}
-<h1>Login</h1>
 
 {% macro render_field(field) %}
-	<br />
-	<b>{{ field.label }}</b><br />
-	{{ field(**kwargs)|safe }}<br />
-	<br />
-	<br />
+  <br />
+  <b>{{ field.label }}</b><br />
+  {{ field(**kwargs)|safe }}<br />
+  <br />
+  <br />
 {% endmacro %}
 
 {% for msg in flashed_messages %}
@@ -19,36 +18,62 @@
 
 {% endfor %}
 
-<form action="/login" method="POST">
-	<br />
-	<b>{{ forms.login.email.label }}</b><br />
-	{{ forms.login.email()|safe }}<br />
-	<br />
-	<br />
-	<b>{{ forms.login.password.label }}</b><br />
-	{{ forms.login.password()|safe }}<br />
-	<br />
-	<input type="submit">
-</form>
+<div class="row">
+  <div class="span6">
+    <form class="well" action="/login" method="POST">
+      <fieldset>
+        <legend>Log In</legend>
+        <div class="control-group">
+          <label class="control-label" for="email">{{ forms.login.email.label }}</label>
+          <div class="controls">
+            {{ forms.login.email()|safe }}
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label" for="password">{{ forms.login.password.label }}</label>
+          <div class="controls">
+            {{ forms.login.password()|safe }}
+          </div>
+        </div>
+        <div class="control-group">
+          <div class="controls">
+            <input type="submit" class="btn">
+          </div>
+        </div>
+      </fieldset>
+    </form>
+  </div>
 
-<hr>
-<hr>
-
-<h1>Registration</h1>
-<br><br>
-<form action="/register" method="POST">
-	<b>{{ forms.registration.name.label }}</b><br />
-	{{ forms.registration.name()|safe }}<br />
-	<br>
-	<br>
-	<b>{{ forms.registration.email.label }}</b><br />
-	{{ forms.registration.email()|safe }}<br />
-	<br>
-	<br>
-	<b>{{ forms.registration.password.label }}</b><br />
-	{{ forms.registration.password()|safe }}<br />
-	<br>
-	<br>
-	<input type="submit">
-</form>
+  <div class="span6">
+    <form class="well" action="/register" method="POST">
+      <fieldset>
+        <legend>Register</legend>
+        <div class="control-group">
+          <label class="control-label" for="name">{{ forms.registration.name.label }}</label>
+          <div class="controls">
+            {{ forms.registration.name()|safe }}
+            <p class="help-block">What your friends call you</p>
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label" for="email">{{ forms.registration.email.label }}</label>
+          <div class="controls">
+            {{ forms.registration.email()|safe }}
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label" for="password">{{ forms.registration.password.label }}</label>
+          <div class="controls">
+            {{ forms.registration.password()|safe }}
+          </div>
+        </div>
+        <div class="control-group">
+          <div class="controls">
+            <input type="submit" class="btn">
+          </div>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+</div>
 {% endblock %}
