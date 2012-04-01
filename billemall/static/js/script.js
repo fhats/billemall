@@ -15,7 +15,7 @@
   });
 
   update_currency_fields = function() {
-    var currency_strings, field, fields, i, v, values, _len, _results;
+    var currency_strings, field, fields, i, name, name_child, people, row, v, values, _i, _len, _len2, _ref;
     if ($('#auto-split')[0].checked) {
       fields = $(".bill-share-field");
       values = split_currency_string($("#bill-amount-total")[0].value, fields.length);
@@ -28,12 +28,24 @@
         }
         return _results;
       })();
-      _results = [];
       for (i = 0, _len = fields.length; i < _len; i++) {
         field = fields[i];
-        _results.push(fields[i].value = currency_strings[i]);
+        fields[i].value = currency_strings[i];
       }
-      return _results;
+      people = [];
+      _ref = $(".add-bill-row");
+      for (_i = 0, _len2 = _ref.length; _i < _len2; _i++) {
+        row = _ref[_i];
+        name_child = $(row.children[0]).children('.name');
+        name = $.trim(name_child[0].textContent);
+        field = $(row.children[1]).children('.bill-share-field')[0];
+        people.push({
+          'name': name,
+          'amount': currency_string_to_cents(field.value)
+        });
+      }
+      $("#add-person-people")[0].value = window.JSON.stringify(people);
+      return $("#people")[0].value = window.JSON.stringify(people);
     }
   };
 
@@ -81,7 +93,7 @@
     for (i = 0, _len = people_elems.length; i < _len; i++) {
       person = people_elems[i];
       people.push({
-        'name': person.textContent.substring(0, person.textContent.length - 1),
+        'name': $.trim(person.textContent),
         'amount': amounts[i]
       });
     }

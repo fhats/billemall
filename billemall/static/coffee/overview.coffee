@@ -44,7 +44,7 @@ update_people = () ->
 
     for person, i in people_elems
       people.push({
-        'name': person.textContent.substring(0, person.textContent.length-1),
+        'name': $.trim(person.textContent),
         'amount': amounts[i]
       })
 

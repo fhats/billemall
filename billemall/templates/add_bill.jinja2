@@ -11,8 +11,10 @@
 <form class="well add-person" id="add-person-form" method="GET"
   action="/add_bill">
   <input type="text" name="new_person" placeholder="John Smith" id="add-person-form-field">
-  <input type="hidden" name="people" value="{{ request.params['people'] }}">
-  <input type="hidden" name="amount" value="{{ request.params['amount'] }}">
+  <input type="hidden" name="people" id="add-person-people"
+  value="{{ request.params['people'] }}">
+  <input type="hidden" name="amount" id="add-person-amount"
+  value="{{ request.params['amount'] }}">
   <button type="submit" class="btn">Add Person</button>
 </form>
 
@@ -66,11 +68,12 @@
   </div>
   {% endif %}
 
-  <div class="row add-bill-row add-bill-row-total">
+  <div class="row add-bill-row-total">
     <div class="span6">Total</div>
     <div class="span4 add-bill-amount input-prepend">
       <span class="add-on">$</span>
-      <input id="bill-amount-total" type="text" class="input-small" name="amount-total"
+      <input id="bill-amount-total" type="text" class="input-small"
+      name="amount-dollars"
       value="{{ amount }}">
     </div>
     <div class="span2 add-bill-auto-split">
@@ -79,6 +82,8 @@
   </div>
 
   <div class="add-bill-bottom">
+    <input type=hidden id="people" name="people">
+    <input type=hidden id="amount" name="amount">
     <button type="submit" class="btn">Add Bill</button>
   </div>
 </form>
