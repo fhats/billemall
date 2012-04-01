@@ -227,19 +227,17 @@ def view_bill(request):
             b['id'] = billee.billshare_user_placeholder.claimed_user.id
             b['email'] = billee.billshare_user_placeholder.claimed_user.email
         
-        b['amount'] = billee.amount
+        b['amount'] = "%0.2f" % (billee.amount / 100)
 
         billees.append(b)
 
     primary = bill.primary_user.as_dict()
     total = bill.total
 
-    total /= 100
-
     return {
         "billees": billees,
         "primary": primary,
-        "total": "%0.2f" % total
+        "total": "%0.2f" % (total / 100)
     }
 
 @view_config(route_name='user_overview', renderer='user_overview.jinja2')

@@ -96,7 +96,7 @@ p {
   margin-bottom: 9px;
 }
 
-.add-bill-row-total {
+.add-bill-row-total, .view-bill-row-total {
   border-top: 1px solid black;
   padding-top: 0.5em;
 }
@@ -130,4 +130,10 @@ p {
 
 .bill-primary {
   color: #4af;
+}
+
+/* view bill */
+
+.view-bill-row .amount, .view-bill-row-total .amount {
+  text-align: right;
 }
