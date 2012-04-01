@@ -29,23 +29,16 @@
   </form>
 </div>
 
-<div class="row-fluid summary-row">
-  <div class="span7"><div class="name">
-      <a href="/user/1">Fred Hatfull</a>
-  </div></div>
-  <div class="span3"><div class="amount amount-positive">$3,000</div></div>
-  <div class="span2 add-bill-button">
-    <a class="add-to-bill-link" data-name="Fred Hatfull">Add to bill</a>
+{% for name, amount in users.iteritems() %}
+  <div class="row-fluid summary-row">
+    <div class="span7"><div class="name">
+      <a href="/user/1">{{ name }}</a>
+    </div></div>
+    <div class="span3"><div class="amount amount-positive">${{ amount }}</div></div>
+    <div class="span2 add-bill-button">
+      <a class="add-to-bill-link" data-name="{{ name }}">Add to bill</a>
+    </div>
   </div>
-</div>
+{% endfor %}
 
-<div class="row-fluid summary-row">
-  <div class="span7"><div class="name">
-      <a href="/user/2">Toby Waite</a>
-  </div></div>
-  <div class="span3"><div class="amount amount-negative">($1,700)</div></div>
-  <div class="span2 add-bill-button">
-    <a class="add-to-bill-link" data-name="Toby Waite">Add to bill</a>
-  </div>
-</div>
 {% endblock %}
