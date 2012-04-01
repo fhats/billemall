@@ -49,8 +49,8 @@ class Bill(Base):
     # The "primary" user on a bill is the user that is invoicing
     # others for money. That user "paid" the bill upstream, and is
     # now requisitioning money for it.
-    primary_user_id = Column(Integer, ForeignKey('user.id'))
-    primary_user = relationship("User")
+    primary_user_id = Column(Integer, ForeignKey('billshare_user_placeholder.id'))
+    primary_user = relationship("BillShareUserPlaceholder")
 
     total = Column(Integer)
 

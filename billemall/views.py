@@ -159,16 +159,17 @@ def add_bill(request):
         if not isinstance(request_body, list):
             return HTTPBadRequest("Expected type list")
         
+        primary_name = request.params['name']
+
+        bill_total = sum([entry['amount'] for entry in request_body])
+
+        primary_placeholder = None
+        user_placeholder = None # placeholder of the logged in user
+
         # Create the Bill
         # This shit is all done in a single transaction in order to have nice ROLLBACK
         # semantics if any one of these transactions fails.
         with transaction.manager:
-            bill = Bill(primary_user_id=request.session['user']['id'])
-            DBSession.add(bill)
-
-            DBSession.flush()
-            DBSession.refresh(bill)
-
             placeholders = []
             for entry in request_body:
                 name = entry['name']
@@ -191,6 +192,21 @@ def add_bill(request):
                     "amount": amount
                 })
 
+                if name == primary_name:
+                    primary_placeholder = placeholder
+
+                if name == request.session['user']['name']:
+                    user_placeholder = placeholder
+
+            if not primary_placeholder:
+                primary_placeholder = user_placeholder
+
+            bill = Bill(primary_user_id=primary_placeholder, total=bill_total)
+            DBSession.add(bill)
+
+            DBSession.flush()
+            DBSession.refresh(bill)
+
             for placeholder in placeholders:
                 bill_share = BillShare(
                     billshare_user_placeholder_id=placeholder["placeholder"].id,
@@ -201,7 +217,7 @@ def add_bill(request):
             bill_id = bill.id
         return HTTPFound(location="/bill/%d" % bill_id)
     else:
-        return HTTPFound(location="/overview")
+        return {}
 
 @view_config(route_name='view_bill', renderer='view_bill.jinja2')
 def view_bill(request):
@@ -221,16 +237,18 @@ def view_bill(request):
         b = {}
         b['name'] = billee.billshare_user_placeholder.name
         
-        if billee.billshare_user_placeholder.claimed_user:
-            b['id'] = billee.billshare_user_placeholder.claimed_user.id
-            b['email'] = billee.billshare_user_placeholder.claimed_user.email
+        b['id'] = billee.billshare_user_placeholder.id
         
         b['amount'] = "%0.2f" % (billee.amount / 100)
 
         billees.append(b)
 
-    primary = bill.primary_user.as_dict()
-    total = sum([share.amount for share in billed_users])
+    total = bill.total
+
+    primary = {
+        'name': bill.primary_user.name,
+        'id': bill.primary_user.id
+    }
 
     return {
         "billees": billees,

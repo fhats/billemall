@@ -44,15 +44,15 @@ def main(argv=sys.argv):
         DBSession.refresh(user)
         DBSession.refresh(other_user)
 
-        # Add a test bill
-        bill = Bill(primary_user_id=user.id)
-        DBSession.add(bill)
-
         fred_holder = BillShareUserPlaceholder(user=user)
         DBSession.add(fred_holder)
 
         steve_holder = BillShareUserPlaceholder(user=other_user)
         DBSession.add(steve_holder)
+
+        # Add a test bill
+        bill = Bill(primary_user_id=fred_holder.id)
+        DBSession.add(bill)
 
         DBSession.flush()
         DBSession.refresh(fred_holder)
