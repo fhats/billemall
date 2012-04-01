@@ -7,12 +7,13 @@
 
 <br>
 
-<form class="row-fluid add-bill-basic-form" action="add_bill">
+<form class="row-fluid add-bill-basic-form form-inline" action="add_bill">
   <div class="span7">
     <input type="text" class="span7" name="people" placeholder="John Smith, Jane Doe, Michael Scott">
   </div>
-  <div class="span3">
-    <input type="text" name="amount" placeholder="$100">
+  <div class="span3 input-prepend amount-box">
+    <span class="add-on">$</span>
+    <input type="text" name="amount" class="input-small" placeholder="100">
   </div>
   <div class="span2 add-bill-button">
     <button type="submit" class="btn">Add bill</button>

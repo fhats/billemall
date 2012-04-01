@@ -13,7 +13,7 @@
   <button type="submit" class="btn">Add Person</button>
 </form>
 
-<form class="add-bill-form" method="POST" action="/add_bill">
+<form class="add-bill-form form-inline" method="POST" action="/add_bill">
 
   <div class="row bill-name-row">
     <div class="span6">
@@ -23,8 +23,9 @@
 
   <div class="row add-bill-row">
     <div class="span6"><div class="name">Me</div></div>
-    <div class="span4 add-bill-amount">
-      <input type="text" class="input-small" name="amount-0" placeholder="$100">
+    <div class="span4 add-bill-amount input-prepend">
+      <span class="add-on">$</span>
+      <input type="text" class="input-small" name="amount-0" placeholder="100">
     </div>
     <!-- do some javascripty thing here -->
     <div class="span2 add-bill-remove-person"><a href="#">Remove</a></div>
@@ -32,8 +33,9 @@
 
   <div class="row add-bill-row">
     <div class="span6"><div class="name bill-primary">Fred Hatfull (primary)</div></div>
-    <div class="span4 add-bill-amount">
-      <input type="text" class="input-small" name="amount-1" placeholder="$100">
+    <div class="span4 add-bill-amount input-prepend">
+      <span class="add-on">$</span>
+      <input type="text" class="input-small" name="amount-1" placeholder="100">
     </div>
     <!-- do some javascripty thing here -->
     <div class="span2 add-bill-remove-person"><a href="#">Remove</a></div>
@@ -41,8 +43,9 @@
 
   <div class="row add-bill-row">
     <div class="span6"><div class="name">Toby Waite</div></div>
-    <div class="span4 add-bill-amount">
-      <input type="text" class="input-small" name="amount-2" placeholder="$100">
+    <div class="span4 add-bill-amount input-prepend">
+      <span class="add-on">$</span>
+      <input type="text" class="input-small" name="amount-2" placeholder="100">
     </div>
     <!-- do some javascripty thing here -->
     <div class="span2 add-bill-remove-person"><a href="#">Remove</a></div>
@@ -50,8 +53,9 @@
 
   <div class="row add-bill-row add-bill-row-total">
     <div class="span6"><div class="name">Total</div></div>
-    <div class="span4 add-bill-amount">
-      <input type="text" class="input-small" name="amount-total" value="$300">
+    <div class="span4 add-bill-amount input-prepend">
+      <span class="add-on">$</span>
+      <input type="text" class="input-small" name="amount-total" value="300">
     </div>
     <div class="span2 add-bill-auto-split">
       Auto-split <input type="checkbox" checked="yes">

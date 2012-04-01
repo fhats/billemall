@@ -2,6 +2,10 @@ body {
   font-size: 14px;
 }
 
+.input-prepend input {
+  margin-left: -4px;
+}
+
 .amount {
   text-align: right;
 }
@@ -32,6 +36,10 @@ body {
 
 .add-bill-basic-form .btn {
   width: 100%;
+}
+
+.add-bill-basic-form .amount-box {
+  text-align: right;
 }
 
 /* user details */
@@ -67,6 +75,7 @@ body {
 
 .add-bill-row {
   border-top: none;
+  margin-bottom: 9px;
 }
 
 .add-bill-row-total {
@@ -90,7 +99,7 @@ body {
 }
 
 .add-bill-bottom {
-  margin-top: 1em;
+  margin-top: 9px;
   text-align: right;
 }
 
