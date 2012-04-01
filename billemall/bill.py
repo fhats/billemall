@@ -118,7 +118,7 @@ def add_bill(request):
     else:
         try:
             people = json.loads(request.params['people'])
-        except KeyError, ValueError:
+        except (KeyError, ValueError):
             return {}
 
         return {
