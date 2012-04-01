@@ -3,12 +3,12 @@ body {
 }
 
 .amount {
-    text-align: right;
+  text-align: right;
 }
 
 /* overview */
 
-.summary-row {
+.summary-row, .add-bill-row {
   min-height: 30px;
   line-height: 30px;
   border-top: 1px solid #eee;
@@ -26,19 +26,19 @@ body {
   color: green;
 }
 
-.summary-row .add-bill {
-    text-align: right;
+.summary-row .add-bill-button {
+  text-align: right;
 }
 
-.add-bill-row .btn {
-    width: 100%;
+.add-bill-basic-form .btn {
+  width: 100%;
 }
 
 /* user details */
 
 .running-total {
-    text-align: right;
-    color: black;
+  text-align: right;
+  color: black;
 }
 
 .history-row {
@@ -48,9 +48,51 @@ body {
 }
 
 .credit {
-    color: red;
+  color: red;
 }
 
 .debit {
-    color: green;
+  color: green;
+}
+
+/* add bill */
+
+.add-person input {
+  margin-bottom: 0;
+}
+
+.add-bill {
+  text-align: right;
+}
+
+.add-bill-row {
+  border-top: none;
+}
+
+.add-bill-row-total {
+  border-top: 1px solid black;
+  padding-top: 0.5em;
+}
+
+.add-bill-amount {
+  text-align: right;
+}
+
+.add-bill-remove-person, .add-bill-auto-split {
+  text-align: right;
+}
+
+.add-bill-bottom {
+  margin-top: 1em;
+  text-align: right;
+}
+
+.add-bill-form .radio input[type="radio"], .checkbox input[type="checkbox"] {
+  display: inline;
+  float: none;
+  margin-left: 0;
+}
+
+.bill-primary {
+  color: #4af;
 }
