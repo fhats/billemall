@@ -101,6 +101,10 @@ p {
   padding-top: 0.5em;
 }
 
+.add-bill-row .name {
+  color: red;
+}
+
 .bill-name-row input {
   width: 100%;
   font-size: 28px;
@@ -128,7 +132,7 @@ p {
   margin-left: 0;
 }
 
-.bill-primary {
+.bill-primary, .add-bill-row .bill-primary {
   color: #4af;
 }
 

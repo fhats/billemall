@@ -128,7 +128,7 @@ def view_bill(request):
     bill_id = int(request.matchdict['id'])
     # Redirect if not logged in
     if 'user' not in request.session:
-        return HTTPFound(location='/')    
+        return HTTPFound(location='/')
 
     bill = DBSession.query(Bill).filter_by(id=bill_id).first()
 

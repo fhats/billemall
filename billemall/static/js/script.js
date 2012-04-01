@@ -1,19 +1,24 @@
 (function() {
-  var $, cents_to_dollar_str, currency_string_to_cents, split_currency_field, split_currency_string, update_people;
+  var $, cents_to_dollar_str, currency_string_to_cents, split_currency_string, update_currency_fields, update_people;
 
   $ = jQuery;
 
   $(function() {
-    return $("#bill-amount-total").keyup(function(event_object) {
-      return split_currency_field(event_object.target.value, 'bill-share-field');
+    $("#bill-amount-total").keyup(function(event) {
+      return update_currency_fields();
     });
+    $(".bill-primary-link").click(function(event) {
+      $(".bill-primary").removeClass('bill-primary');
+      return $(event.target).addClass('bill-primary');
+    });
+    return update_currency_fields();
   });
 
-  split_currency_field = function(src_text, target_class) {
+  update_currency_fields = function() {
     var currency_strings, field, fields, i, v, values, _len, _results;
     if ($('#auto-split')[0].checked) {
-      fields = $("." + target_class);
-      values = split_currency_string(src_text, fields.length);
+      fields = $(".bill-share-field");
+      values = split_currency_string($("#bill-amount-total")[0].value, fields.length);
       currency_strings = (function() {
         var _i, _len, _results;
         _results = [];

@@ -1,14 +1,21 @@
 $ = jQuery
 
 $ ->
-  $("#bill-amount-total").keyup (event_object) ->
-    split_currency_field(event_object.target.value, 'bill-share-field')
+  $("#bill-amount-total").keyup (event) ->
+    update_currency_fields()
 
-split_currency_field = (src_text, target_class) ->
+  $(".bill-primary-link").click (event) ->
+    $(".bill-primary").removeClass('bill-primary')
+    $(event.target).addClass('bill-primary')
+
+  update_currency_fields()
+
+
+update_currency_fields = () ->
   if $('#auto-split')[0].checked
-    fields = $("." + target_class)
+    fields = $(".bill-share-field")
 
-    values = split_currency_string(src_text, fields.length)
+    values = split_currency_string($("#bill-amount-total")[0].value, fields.length)
     currency_strings = (cents_to_dollar_str(v) for v in values)
 
     for field, i in fields
