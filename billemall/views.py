@@ -232,10 +232,12 @@ def view_bill(request):
     primary = bill.primary_user.as_dict()
     total = sum([share.amount for share in billed_users])
 
+    total /= 100
+
     return {
         "billees": billees,
         "primary": primary,
-        "total": total
+        "total": "%0.2f" % total
     }
 
 @view_config(route_name='user_overview', renderer='user_overview.jinja2')

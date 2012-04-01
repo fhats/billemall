@@ -52,6 +52,8 @@ class Bill(Base):
     primary_user_id = Column(Integer, ForeignKey('user.id'))
     primary_user = relationship("User")
 
+    total = Column(Integer)
+
 class BillShare(Base):
     __tablename__ = "billshare"
     id = Column(Integer, primary_key=True)
