@@ -28,7 +28,7 @@
       var add_elem, elem, name;
       add_elem = event.target;
       name = add_elem.getAttribute('data-name');
-      $("#people").append('<a class="person">' + name + ' </a>');
+      $("#people").append('<a class="bill-person">' + name + ' </a>');
       elem = $('#people').children().last();
       elem.click(function(event) {
         $(add_elem).show();
@@ -42,7 +42,7 @@
       field = $('#person-field')[0];
       name = field.value;
       field.value = '';
-      $('#people').append('<a class="person">' + name + ' </a>');
+      $('#people').append('<a class="bill-person">' + name + ' </a>');
       elem = $('#people').children().last();
       return elem.click(function(event) {
         return $(event.target).remove();
@@ -51,7 +51,7 @@
     return $("#overview-add-bill-button").click(function(event) {
       var amounts, i, people, people_elems, person, _len;
       event.preventDefault();
-      people_elems = $("#people").children();
+      people_elems = $(".bill-person");
       people = [];
       amounts = split_currency_string($("#amount-field")[0].value, people_elems.length);
       console.log(amounts);
@@ -74,7 +74,7 @@
     items[items.length] = '00';
     items[1] = items[1] + '0';
     items[1] = items[1][0] + items[1][2];
-    return target_text = items[0] + '.' + items[1];
+    return items[0] + '.' + items[1];
   };
 
   split_currency_string = function(currency_string, num_fields) {
@@ -82,7 +82,7 @@
     target_value = parseInt(currency_string, 10) / num_fields;
     if (isNaN(target_value)) target_value = 0;
     strings = [];
-    for (_ = 0; 0 <= num_fields ? _ <= num_fields : _ >= num_fields; 0 <= num_fields ? _++ : _--) {
+    for (_ = 0; 0 <= num_fields ? _ < num_fields : _ > num_fields; 0 <= num_fields ? _++ : _--) {
       strings.push(float_to_currency_string(target_value));
     }
     return strings;
