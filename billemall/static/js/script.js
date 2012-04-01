@@ -11,23 +11,25 @@
 
   split_currency_field = function(src_text, target_class) {
     var currency_strings, field, fields, i, v, values, _len, _results;
-    fields = $("." + target_class);
-    values = split_currency_string(src_text, fields.length);
-    currency_strings = (function() {
-      var _i, _len, _results;
+    if ($('#auto-split')[0].checked) {
+      fields = $("." + target_class);
+      values = split_currency_string(src_text, fields.length);
+      currency_strings = (function() {
+        var _i, _len, _results;
+        _results = [];
+        for (_i = 0, _len = values.length; _i < _len; _i++) {
+          v = values[_i];
+          _results.push(cents_to_dollar_str(v));
+        }
+        return _results;
+      })();
       _results = [];
-      for (_i = 0, _len = values.length; _i < _len; _i++) {
-        v = values[_i];
-        _results.push(cents_to_dollar_str(v));
+      for (i = 0, _len = fields.length; i < _len; i++) {
+        field = fields[i];
+        _results.push(fields[i].value = currency_strings[i]);
       }
       return _results;
-    })();
-    _results = [];
-    for (i = 0, _len = fields.length; i < _len; i++) {
-      field = fields[i];
-      _results.push(fields[i].value = currency_strings[i]);
     }
-    return _results;
   };
 
   $ = jQuery;
