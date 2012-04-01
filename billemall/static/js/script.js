@@ -1,5 +1,5 @@
 (function() {
-  var $, float_to_currency_string, split_currency_field, split_currency_string;
+  var $, float_to_currency_string, split_currency_field, split_currency_string, update_people;
 
   $ = jQuery;
 
@@ -34,9 +34,10 @@
         $(add_elem).show();
         return $(event.target).remove();
       });
-      return $(add_elem).hide();
+      $(add_elem).hide();
+      return update_people();
     });
-    $('#add-to-bill-field-button').click(function(event) {
+    return $('#add-to-bill-field-button').click(function(event) {
       var elem, field, name;
       event.preventDefault();
       field = $('#person-field')[0];
@@ -44,29 +45,30 @@
       field.value = '';
       $('#people').append('<a class="bill-person">' + name + ' </a>');
       elem = $('#people').children().last();
-      return elem.click(function(event) {
+      elem.click(function(event) {
         return $(event.target).remove();
       });
-    });
-    return $("#add-bill-form").submit(function(event) {
-      var amounts, i, people, people_elems, person, _len;
-      people_elems = $(".bill-person");
-      people = [];
-      amounts = split_currency_string($("#amount-field")[0].value, people_elems.length);
-      console.log(amounts);
-      for (i = 0, _len = people_elems.length; i < _len; i++) {
-        person = people_elems[i];
-        people.push({
-          'name': person.textContent.substring(0, person.textContent.length - 1),
-          'amount': amounts[i]
-        });
-      }
-      console.log(people);
-      console.log(window.JSON.stringify(people));
-      console.log($("#sneaky-people")[0].value);
-      return $("#sneaky-people")[0].value = window.JSON.stringify(people);
+      return update_people();
     });
   });
+
+  update_people = function() {
+    var amounts, i, people, people_elems, person, _len;
+    people_elems = $(".bill-person");
+    people = [];
+    amounts = split_currency_string($("#amount-field")[0].value, people_elems.length);
+    for (i = 0, _len = people_elems.length; i < _len; i++) {
+      person = people_elems[i];
+      people.push({
+        'name': person.textContent.substring(0, person.textContent.length - 1),
+        'amount': amounts[i]
+      });
+    }
+    console.log(people);
+    console.log(window.JSON.stringify(people));
+    console.log($("#sneaky-people")[0].value);
+    return $("#sneaky-people")[0].value = window.JSON.stringify(people);
+  };
 
   float_to_currency_string = function(target_value) {
     var items, target_text;
