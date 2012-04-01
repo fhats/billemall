@@ -146,7 +146,6 @@ def overview(request):
 
 @view_config(route_name='add_bill', renderer='add_bill.jinja2')
 def add_bill(request):
-    print request.params
     if 'user' not in request.session:
         return HTTPFound(location="/")
 
@@ -178,13 +177,12 @@ def add_bill(request):
 
                 # TODO(fhats): Change this to add users if they exist and are in a mapping
                 # of allowed users for this user to bill
-                placeholder = BillShareUserPlaceholder()
+                placeholder = BillShareUserPlaceholder(name=name)
                 DBSession.add(placeholder)
                 # Note: we call encrypt() on this placeholder to generate an ID that can be passed
                 # around and not easily guessed.
                 DBSession.flush()
                 DBSession.refresh(placeholder)
-                print placeholder.id
                 placeholder.encrypt()
                 DBSession.add(placeholder)
 
