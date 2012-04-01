@@ -7,7 +7,7 @@ from sqlalchemy.exc import DBAPIError
 
 from .forms.login import LoginForm
 from .forms.registration import RegistrationForm
-from .models import DBSession, User
+from .models import DBSession, Bill, Billee, User
 
 def dump_flashed_messages(request):
     msgs = []
@@ -112,7 +112,17 @@ def add_bill(request):
 
 @view_config(route_name='view_bill', renderer='view_bill.jinja2')
 def view_bill(request):
-    return {"status": "ok"}
+    bill_id = int(request.matchdict['id'])
+    # Redirect if not logged in
+    if 'user' not in request.session:
+        return HTTPFound(location='/')    
+
+    # Find the billees on this bill
+    billed_users = DBSession.query(Billee).filter_by(bill_id=bill_id).all()
+
+    return {
+        "billees": billed_users
+    }
 
 @view_config(route_name='user_overview', renderer='user_overview.jinja2')
 def user_overview(request):

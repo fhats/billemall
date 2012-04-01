@@ -1,6 +1,8 @@
 from passlib.apps import custom_app_context as pwd_context
 from sqlalchemy import (
+    Boolean,
     Column,
+    ForeignKey,
     Integer,
     Text,
     )
