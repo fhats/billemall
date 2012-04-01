@@ -1,4 +1,5 @@
-from pyramid.httpexceptions import HTTPFound
+from collections import defaultdict
+from pyramid.httpexceptions import HTTPBadRequest, HTTPFound
 from pyramid.response import Response
 from pyramid.view import view_config
 import transaction
@@ -7,7 +8,7 @@ from sqlalchemy.exc import DBAPIError
 
 from .forms.login import LoginForm
 from .forms.registration import RegistrationForm
-from .models import DBSession, Bill, Billee, User
+from .models import DBSession, Bill, BillShare, BillShareUserPlaceholder, User
 
 def dump_flashed_messages(request):
     msgs = []
@@ -104,11 +105,96 @@ def do_user_login(request, user):
 
 @view_config(route_name='overview', renderer='overview.jinja2')
 def overview(request):
-    return {"status": "ok"}
+    """Shows the overview for the logged-in user."""
+    if 'user' not in request.session:
+        return HTTPFound(location="/")
+
+    # this queries is so awesome
+    # first get all the bills we are on
+    user_bills = DBSession.query(Bill).\
+        join(BillShare).\
+        join(BillShareUserPlaceholder).\
+        filter_by(claimed_user_id=request.session['user']['id']).\
+        all()
+
+    # now get all the users we have any association with
+    # a dicts containing a user id and a cumulative amount owed
+    # NOTE: We aggregate based on name for unclaimed placeholders
+    # this is prone to name collisions
+    # + = this user is getting money
+    # - = this user owes money
+    users = defaultdict(int)
+    for bill in user_bills:
+        bill_shares = DBSession.query(BillShare).\
+            join(Bill).\
+            filter(Bill.id == bill.id).\
+            all()
+        
+        for share in bill_shares:
+            if share.billshare_user_placeholder.claimed_user_id == request.session['user']['id']:
+                continue
+            
+            if bill.primary_user_id == request.session['user']['id']:
+                users[share.billshare_user_placeholder.name] += share.amount
+            else:
+                users[share.billshare_user_placeholder.name] -= share.amount
+
+    return {
+        "users": dict(users)
+    }
 
 @view_config(route_name='add_bill', renderer='add_bill.jinja2')
 def add_bill(request):
-    return {"status": "ok"}
+    if 'user' not in request.session:
+        return HTTPFound(location="/")
+
+    if request.method == "POST":
+        # We expect the request body to just be a list of 
+        request_body = request.json_body
+        
+        if not isinstance(request_body, list):
+            return HTTPBadRequest("Expected type list")
+        
+        # Create the Bill
+        # This shit is all done in a single transaction in order to have nice ROLLBACK
+        # semantics if any one of these transactions fails.
+        with transaction.manager:
+            bill = Bill(primary_user_id=request.session['user']['id'])
+            DBSession.add(bill)
+
+            DBSession.flush()
+            DBSession.refresh(bill)
+
+            placeholders = []
+            for entry in request_body:
+                name = entry['name']
+                amount = entry['amount']
+                # Create a placeholder for the BillShares of this bill
+
+                # TODO(fhats): Change this to add users if they exist and are in a mapping
+                # of allowed users for this user to bill
+                placeholder = BillShareUserPlaceholder()
+                # Note: we call encrypt() on this placeholder to generate an ID that can be passed
+                # around and not easily guessed.
+                placeholder.encrypt()
+                DBSession.add(placeholder)
+
+                placeholders.append({
+                    "placeholder": placeholder,
+                    "amount": amount
+                })
+
+            for placeholder in placeholders:
+                bill_share = BillShare(
+                    billshare_user_placeholder_id=placeholder["placeholder"].id,
+                    bill_id=bill.id,
+                    amount=placeholder["amount"])
+                DBSession.add(bill_share)
+
+            bill_id = bill.id
+        return HTTPFound(location="/bill/%d" % bill_id)
+    else:
+        return HTTPFound(location="/overview")
 
 @view_config(route_name='view_bill', renderer='view_bill.jinja2')
 def view_bill(request):
@@ -118,7 +204,7 @@ def view_bill(request):
         return HTTPFound(location='/')    
 
     # Find the billees on this bill
-    billed_users = DBSession.query(Billee).filter_by(bill_id=bill_id).all()
+    billed_users = DBSession.query(BillShare).filter_by(bill_id=bill_id).all()
 
     billees = []
 

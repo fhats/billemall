@@ -46,16 +46,48 @@ class Bill(Base):
     __tablename__ = "bill"
     id = Column(Integer, primary_key=True)
 
-class Billee(Base):
-    __tablename__ = "billee"
+    # The "primary" user on a bill is the user that is invoicing
+    # others for money. That user "paid" the bill upstream, and is
+    # now requisitioning money for it.
+    primary_user_id = Column(Integer, ForeignKey('user.id'))
+    pimary_user = relationship("User")
+
+class BillShare(Base):
+    __tablename__ = "billshare"
     id = Column(Integer, primary_key=True)
 
-    user_id = Column(Integer, ForeignKey('user.id'))
-    user = relationship("User")
+    billshare_user_placeholder_id = Column(Integer, ForeignKey('billshare_user_placeholder.id'))
+    billshare_user_placeholder = relationship("BillShareUserPlaceholder")
 
     bill_id = Column(Integer, ForeignKey("bill.id"))
     bill = relationship("Bill")
 
     amount = Column(Integer)
 
-    is_primary = Column(Boolean)
+class BillShareUserPlaceholder(Base):
+    __tablename__ = "billshare_user_placeholder"
+    id = Column(Integer, primary_key=True)
+    encrypted_id = Column(Text, unique=True)
+    name = Column(Text)
+
+    claimed_user_id = Column(Integer, ForeignKey('user.id'))
+    claimed_user = relationship("User")
+
+    def __init__(self, name=None, user=None):
+        self.name = name
+        if user:
+            self.claimed_user_id = user.id
+
+    def __getattribute__(self, attr):
+        if attr == "name" and self.claimed_user:
+            return self.claimed_user.name
+        else:
+            return object.__getattribute__(self, attr)
+
+    def encrypt(self):
+        # TODO(fhats): This should probably change so we don't use the same encryption algorithm/keyspace
+        # for encrypted placeholder IDs as password hashing.
+        self.encrypted_id = pwd_context.encrypt(self.id)
+
+    def claim(self, user):
+        self.claimed_user_id = user.id
