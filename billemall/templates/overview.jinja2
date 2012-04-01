@@ -32,14 +32,14 @@
   </form>
 </div>
 
-{% for name, amount in users.iteritems() %}
+{% for user in users %}
   <div class="row-fluid summary-row">
     <div class="span7"><div class="name">
-      <a href="/user/1">{{ name }}</a>
+      <a href="/user/1">{{ user['name'] }}</a>
     </div></div>
-    <div class="span3"><div class="amount amount-positive">${{ amount }}</div></div>
+    <div class="span3"><div class="amount amount-positive">${{ user['amount'] }}</div></div>
     <div class="span2 add-bill-button">
-      <a class="add-to-bill-link" data-name="{{ name }}">Add to bill</a>
+      <a class="add-to-bill-link" data-name="{{ user['name'] }}">Add to bill</a>
     </div>
   </div>
 {% endfor %}

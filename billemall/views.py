@@ -47,15 +47,24 @@ def overview(request):
                 continue
             
             if bill.primary_user.claimed_user_id == request.session['user']['id']:
-                users[share.billshare_user_placeholder.name] += share.amount
+                users[share.billshare_user_placeholder.id] += share.amount
             else:
-                users[share.billshare_user_placeholder.name] -= share.amount
+                users[share.billshare_user_placeholder.id] -= share.amount
 
     for user, cents in users.iteritems():
         users[user] = cents_to_dollar_str(cents)
 
+    # Fill out the names and IDs of the users
+    result_dict = [{
+        "id": user_id,
+        "name": DBSession.query(BillShareUserPlaceholder).get(user_id).name,
+        "amount": amount
+    } for user_id, amount in users.iteritems()]
+
+    print result_dict
+
     return {
-        "users": dict(users)
+        "users": result_dict
     }
 
 @view_config(route_name='user_overview', renderer='user_overview.jinja2')
