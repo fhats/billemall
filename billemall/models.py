@@ -87,7 +87,7 @@ class BillShareUserPlaceholder(Base):
     def encrypt(self):
         # TODO(fhats): This should probably change so we don't use the same encryption algorithm/keyspace
         # for encrypted placeholder IDs as password hashing.
-        self.encrypted_id = pwd_context.encrypt(self.id)
+        self.encrypted_id = pwd_context.encrypt(str(self.id))
 
     def claim(self, user):
         self.claimed_user_id = user.id
