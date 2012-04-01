@@ -14,7 +14,7 @@
       <button id="add-to-bill-field-button" type="submit" class="btn">Add to bill</button>
     </form>
   </div>
-  <form class="form-inline" id="add-bill-form" action="add_bill" method="POST">
+  <form class="form-inline" id="add-bill-form" action="add_bill" method="GET">
     <div class="span4" id="people-container">
       <span class="bill-person">{{ request.session['user']['name'] }} </span>
       &nbsp;
