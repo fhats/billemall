@@ -33,6 +33,8 @@ $ ->
   $("#amount-field").keyup (event) ->
     update_people()
 
+  update_people()
+
 update_people = () ->
     people_elems = $(".bill-person")
     if people_elems.length < 1

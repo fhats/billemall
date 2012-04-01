@@ -78,9 +78,10 @@
       });
       return update_people();
     });
-    return $("#amount-field").keyup(function(event) {
+    $("#amount-field").keyup(function(event) {
       return update_people();
     });
+    return update_people();
   });
 
   update_people = function() {
