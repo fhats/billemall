@@ -8,6 +8,7 @@ from sqlalchemy import (
 from sqlalchemy.ext.declarative import declarative_base
 
 from sqlalchemy.orm import (
+    relationship,
     scoped_session,
     sessionmaker,
     )
@@ -38,3 +39,21 @@ class User(Base):
             'name': self.name,
             'email': self.email
         }
+
+class Bill(Base):
+    __tablename__ = "bill"
+    id = Column(Integer, primary_key=True)
+
+class Billee(Base):
+    __tablename__ = "billee"
+    id = Column(Integer, primary_key=True)
+
+    user_id = Column(Integer, ForeignKey('user.id'))
+    user = relationship("User")
+
+    bill_id = Column(Integer, ForeignKey("bill.id"))
+    bill = relationship("Bill")
+
+    amount = Column(Integer)
+
+    is_primary = Column(Boolean)
