@@ -1,17 +1,73 @@
 {% extends "base_loggedin.jinja2" %}
 
-{% block menu_overview %}class="active"{% endblock %}
+{% block menu_add_bill %}class="active"{% endblock %}
 
 {% block content %}
-<h1>Overview</h1>
+<h1>Add Bill</h1>
 
-<div class="row-fluid summary-row">
-  <div class="span7"><div class="name">Fred Hatfull</div></div>
-  <div class="span3"><div class="amount">$3,000</div></div>
-  <div class="span2">
-    <a href="/fred_hatfull/add_bill">
-      <div class="add-bill">Add bill</div>
-    </a>
+<br>
+
+<!-- do some javascripty thing here -->
+<form class="well add-person" method="POST">
+  <input type="text" name="person" placeholder="John Smith">
+  <button type="submit" class="btn">Add Person</button>
+</form>
+
+<form class="add-bill-form form-inline" method="POST" action="/add_bill">
+
+  <div class="row bill-name-row">
+    <div class="span6">
+      <input type="text" class="input" name="bill-name" placeholder="Random expenses">
+    </div>
   </div>
-</div>
+
+  <div class="row add-bill-row">
+    <div class="span6"><div class="name">Me</div></div>
+    <div class="span4 add-bill-amount input-prepend">
+      <span class="add-on">$</span>
+      <input type="text" class="input-small" name="amount-0" placeholder="100">
+    </div>
+    <!-- do some javascripty thing here -->
+    <div class="span2 add-bill-remove-person"><a href="#">Remove</a></div>
+  </div>
+
+  <div class="row add-bill-row">
+    <div class="span6"><div class="name bill-primary">Fred Hatfull (primary)</div></div>
+    <div class="span4 add-bill-amount input-prepend">
+      <span class="add-on">$</span>
+      <input type="text" class="input-small" name="amount-1" placeholder="100">
+    </div>
+    <!-- do some javascripty thing here -->
+    <div class="span2 add-bill-remove-person"><a href="#">Remove</a></div>
+  </div>
+
+  <div class="row add-bill-row">
+    <div class="span6"><div class="name">Toby Waite</div></div>
+    <div class="span4 add-bill-amount input-prepend">
+      <span class="add-on">$</span>
+      <input type="text" class="input-small" name="amount-2" placeholder="100">
+    </div>
+    <!-- do some javascripty thing here -->
+    <div class="span2 add-bill-remove-person"><a href="#">Remove</a></div>
+  </div>
+
+  <div class="row add-bill-row add-bill-row-total">
+    <div class="span6"><div class="name">Total</div></div>
+    <div class="span4 add-bill-amount input-prepend">
+      <span class="add-on">$</span>
+      <input type="text" class="input-small" name="amount-total" value="300">
+    </div>
+    <div class="span2 add-bill-auto-split">
+      Auto-split <input type="checkbox" checked="yes">
+    </div>
+  </div>
+
+  <div class="add-bill-bottom">
+    <button type="submit" class="btn">Add Bill</button>
+  </div>
+</form>
+
+<div class="bill-explain">
+  After adding this bill: <span class="credit">You and Toby each owe Fred $100</span>
+
 {% endblock %}

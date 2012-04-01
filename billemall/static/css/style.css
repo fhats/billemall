@@ -2,13 +2,17 @@ body {
   font-size: 14px;
 }
 
+.input-prepend input {
+  margin-left: -4px;
+}
+
 .amount {
-    text-align: right;
+  text-align: right;
 }
 
 /* overview */
 
-.summary-row {
+.summary-row, .add-bill-row {
   min-height: 30px;
   line-height: 30px;
   border-top: 1px solid #eee;
@@ -26,15 +30,23 @@ body {
   color: green;
 }
 
-.summary-row .add-bill {
-    text-align: right;
+.summary-row .add-bill-button {
+  text-align: right;
+}
+
+.add-bill-basic-form .btn {
+  width: 100%;
+}
+
+.add-bill-basic-form .amount-box {
+  text-align: right;
 }
 
 /* user details */
 
 .running-total {
-    text-align: right;
-    color: black;
+  text-align: right;
+  color: black;
 }
 
 .history-row {
@@ -44,9 +56,60 @@ body {
 }
 
 .credit {
-    color: red;
+  color: red;
 }
 
 .debit {
-    color: green;
+  color: green;
+}
+
+/* add bill */
+
+.add-person input {
+  margin-bottom: 0;
+}
+
+.add-bill {
+  text-align: right;
+}
+
+.add-bill-row {
+  border-top: none;
+  margin-bottom: 9px;
+}
+
+.add-bill-row-total {
+  border-top: 1px solid black;
+  padding-top: 0.5em;
+}
+
+.bill-name-row input {
+  width: 100%;
+  font-size: 28px;
+  height: 30px;
+  line-height: 30px;
+  margin-bottom: 1em;
+}
+
+.add-bill-amount {
+  text-align: right;
+}
+
+.add-bill-remove-person, .add-bill-auto-split {
+  text-align: right;
+}
+
+.add-bill-bottom {
+  margin-top: 9px;
+  text-align: right;
+}
+
+.add-bill-form .radio input[type="radio"], .checkbox input[type="checkbox"] {
+  display: inline;
+  float: none;
+  margin-left: 0;
+}
+
+.bill-primary {
+  color: #4af;
 }
