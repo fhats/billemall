@@ -1,15 +1,15 @@
 (function() {
-  var $, echo_field;
+  var $, split_currency_field;
 
   $ = jQuery;
 
   $(function() {
     return $("#bill-amount-total").keyup(function(event_object) {
-      return echo_field(event_object.target.value, 'bill-share-field');
+      return split_currency_field(event_object.target.value, 'bill-share-field');
     });
   });
 
-  echo_field = function(src_text, target_class) {
+  split_currency_field = function(src_text, target_class) {
     var field, fields, items, target_text, target_value, _i, _len, _results;
     fields = $("." + target_class);
     target_value = parseInt(src_text, 10) / fields.length;

@@ -2,9 +2,9 @@ $ = jQuery
 
 $ ->
   $("#bill-amount-total").keyup (event_object) ->
-    echo_field(event_object.target.value, 'bill-share-field')
+    split_currency_field(event_object.target.value, 'bill-share-field')
 
-echo_field = (src_text, target_class) ->
+split_currency_field = (src_text, target_class) ->
   fields = $("." + target_class)
   target_value = parseInt(src_text, 10) / fields.length
   if isNaN(target_value)
