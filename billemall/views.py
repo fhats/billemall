@@ -12,6 +12,7 @@ from .forms.login import LoginForm
 from .forms.registration import RegistrationForm
 from .models import DBSession, Bill, BillShare, BillShareUserPlaceholder, User
 
+
 def dump_flashed_messages(request):
     msgs = []
     while request.session.peek_flash():
@@ -19,10 +20,8 @@ def dump_flashed_messages(request):
 
     return msgs
 
-@view_config(route_name='home', renderer='login.jinja2')
-def home(request):
-    if 'user' in request.session:
-        return HTTPFound(location='/overview')
+
+def login_context(request):
     login_form = LoginForm(request.params)
     registration_form = RegistrationForm(request.params)
     return {
@@ -33,6 +32,14 @@ def home(request):
         }
     }
 
+
+@view_config(route_name='home', renderer='index.jinja2')
+def home(request):
+    if 'user' in request.session:
+        return HTTPFound(location='/overview')
+    return login_context(request)
+
+
 @view_config(route_name='login', renderer='login.jinja2')
 def login(request):
     if request.method == "POST" and 'user' not in request.session:
@@ -42,9 +49,10 @@ def login(request):
 
         login_form = LoginForm(request.params)
         if not login_form.validate():
-            for field, error in login_form.errors.iteritems():
-                request.session.flash("Invalid input for field %s: %s" % (field, error))
-            return HTTPFound(location='/')
+            for field, errors in login_form.errors.iteritems():
+                for error in errors:
+                    request.session.flash("%s: %s" % (field, error))
+            return login_context(request)
 
         proposed_user = DBSession.query(User).filter_by(email=incoming_email).first()
         if proposed_user.check_password(incoming_password):
@@ -57,9 +65,9 @@ def login(request):
             return HTTPFound(location=redirect_url)
         else:
             request.session.flash("Incorrect email address/password combination.")
-            return HTTPFound(location='/')
+            return login_context(request)
     else:
-        return HTTPFound(location='/')
+        return login_context(request)
 
 @view_config(route_name='logout')
 def logout(request):
