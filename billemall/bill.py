@@ -68,6 +68,7 @@ def add_bill(request):
 
                 if name == request.session['user']['name']:
                     placeholder = DBSession.query(BillShareUserPlaceholder).filter_by(id=request.session['placeholder']).first()
+                    user_placeholder = placeholder
                 elif existing_user_placeholder:
                     placeholder = existing_user_placeholder
                 else:
@@ -89,9 +90,6 @@ def add_bill(request):
 
                 if name == primary_name:
                     primary_placeholder = placeholder
-
-                if name == request.session['user']['name']:
-                    user_placeholder = placeholder
 
             if not primary_placeholder:
                 primary_placeholder = user_placeholder
@@ -115,7 +113,21 @@ def add_bill(request):
         try:
             people = json.loads(request.params['people'])
         except (KeyError, ValueError):
-            return {}
+            return {
+                "people": [
+                    {
+                        "name": request.session['user']['name'],
+                        "amount": 0
+                    }
+                ],
+                "amount": 0
+            }
+
+        if not any([person['name'] == request.session['user']['name'] for person in people]):
+            people.append({
+                "name": request.session['user']['name'],
+                "amount": 0
+            })
 
         return {
             "people": people,
