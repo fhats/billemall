@@ -181,6 +181,8 @@ def add_bill(request):
                 placeholder = BillShareUserPlaceholder()
                 # Note: we call encrypt() on this placeholder to generate an ID that can be passed
                 # around and not easily guessed.
+                DBSession.flush()
+                DBSession.refresh(placeholder)
                 placeholder.encrypt()
                 DBSession.add(placeholder)
 
@@ -231,6 +233,8 @@ def view_bill(request):
 
 @view_config(route_name='user_overview', renderer='user_overview.jinja2')
 def user_overview(request):
+
+
     return {"status": "ok"}
 
 @view_config(route_name='account', renderer='account.jinja2')
