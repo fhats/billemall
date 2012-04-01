@@ -95,15 +95,21 @@ def register(request):
         with transaction.manager:
             new_user = User(user_name, user_email, user_password)
             DBSession.add(new_user)
+            DBSession.flush()
+            DBSession.refresh(new_user)
 
-        added_user = DBSession.query(User).filter_by(email=user_email).first()
+            new_user_placeholder = BillShareUserPlaceholder(new_user)
+            DBSession.add(new_user_placeholder)
 
-        do_user_login(request, added_user)
+            do_user_login(request, new_user, new_user_placeholder)
 
         return HTTPFound(location='/overview')
     else:
         return registration_context(request)
 
-def do_user_login(request, user):
+def do_user_login(request, user, placeholder=None):
+    if not placeholder:
+        placeholder = DBSession.query(BillShareUserPlaceholder).filter_by(claimed_user_id=user.id).first()
     session = request.session
     session['user'] = user.as_dict()
+    session['placeholder'] = placeholder.id

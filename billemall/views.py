@@ -27,6 +27,8 @@ def overview(request):
         filter_by(claimed_user_id=request.session['user']['id']).\
         all()
 
+    print user_bills
+
     # now get all the users we have any association with
     # a dicts containing a user id and a cumulative amount owed
     # NOTE: We aggregate based on name for unclaimed placeholders

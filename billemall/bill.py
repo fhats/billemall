@@ -66,10 +66,10 @@ def add_bill(request):
                     if previously_billed_placeholder.name == name:
                         existing_user_placeholder = previously_billed_placeholder
 
-                if existing_user_placeholder:
+                if name == request.session['user']['name']:
+                    placeholder = DBSession.query(BillShareUserPlaceholder).filter_by(id=request.session['placeholder']).first()
+                elif existing_user_placeholder:
                     placeholder = existing_user_placeholder
-                    print "*" * 80
-                    print "Found placeholder for %s" % name
                 else:
                     # TODO(fhats): Change this to add users if they exist and are in a mapping
                     # of allowed users for this user to bill
@@ -90,17 +90,13 @@ def add_bill(request):
                 if name == primary_name:
                     primary_placeholder = placeholder
 
-                print "primary: %r" % primary_placeholder
-
                 if name == request.session['user']['name']:
                     user_placeholder = placeholder
-
-                print "user ph: %r" % user_placeholder
 
             if not primary_placeholder:
                 primary_placeholder = user_placeholder
 
-            bill = Bill(primary_user_id=primary_placeholder, total=bill_total)
+            bill = Bill(primary_user_id=primary_placeholder.id, total=bill_total)
             DBSession.add(bill)
 
             DBSession.flush()
@@ -125,6 +121,7 @@ def add_bill(request):
             "people": people,
             "amount": request.params["amount"]
         }
+
 
 @view_config(route_name='view_bill', renderer='view_bill.jinja2')
 def view_bill(request):
