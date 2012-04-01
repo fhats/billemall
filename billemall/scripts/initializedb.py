@@ -11,6 +11,9 @@ from pyramid.paster import (
 
 from ..models import (
     DBSession,
+    Bill,
+    BillShare,
+    BillShareUserPlaceholder,
     User,
     Base,
     )
@@ -30,4 +33,34 @@ def main(argv=sys.argv):
     engine = engine_from_config(settings, 'sqlalchemy.')
     DBSession.configure(bind=engine)
     Base.metadata.create_all(engine)
-    
+    with transaction.manager:
+        user = User(name="Fred", email="lurkingfridge79@gmail.com", password="password")
+        DBSession.add(user)
+
+        other_user = User(name="Steve", email="suckawang@steveasleep.com", password="password")
+        DBSession.add(other_user)
+
+        DBSession.flush()
+        DBSession.refresh(user)
+        DBSession.refresh(other_user)
+
+        # Add a test bill
+        bill = Bill(primary_user_id=user.id)
+        DBSession.add(bill)
+
+        fred_holder = BillShareUserPlaceholder(user=user)
+        DBSession.add(fred_holder)
+
+        steve_holder = BillShareUserPlaceholder(user=other_user)
+        DBSession.add(steve_holder)
+
+        DBSession.flush()
+        DBSession.refresh(fred_holder)
+        DBSession.refresh(steve_holder)
+        DBSession.refresh(bill)
+
+        bs = BillShare(bill_id=bill.id, billshare_user_placeholder_id=steve_holder.id, amount=300)
+        DBSession.add(bs)
+
+        f_bs = BillShare(bill_id=bill.id, billshare_user_placeholder_id=fred_holder.id, amount=300)
+        DBSession.add(f_bs)
