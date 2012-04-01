@@ -1,3 +1,4 @@
+from passlib.apps import custom_app_context as pwd_context
 from sqlalchemy import (
     Column,
     Integer,
@@ -20,9 +21,20 @@ class User(Base):
     __tablename__ = 'user'
     id = Column(Integer, primary_key=True)
     name = Column(Text)
-    email = Column(Text)
+    email = Column(Text, unique=True)
     password_hash = Column(Text)
 
-    def __init__(self, name, value):
+    def __init__(self, name, email, password):
         self.name = name
-        self.value = value
+        self.email = email
+        self.password_hash = pwd_context.encrypt(password)
+
+    def check_password(self, attempted_password):
+        return pwd_context.verify(attempted_password, self.password_hash)
+
+    def as_dict(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'email': self.email
+        }

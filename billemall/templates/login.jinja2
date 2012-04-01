@@ -1,17 +1,54 @@
-{% extends "base_loggedin.jinja2" %}
+{% extends "base.jinja2" %}
 
 {% block menu_overview %}class="active"{% endblock %}
 
 {% block content %}
-<h1>Overview</h1>
+<h1>Login</h1>
 
-<div class="row-fluid summary-row">
-  <div class="span7"><div class="name">Fred Hatfull</div></div>
-  <div class="span3"><div class="amount">$3,000</div></div>
-  <div class="span2">
-    <a href="/fred_hatfull/add_bill">
-      <div class="add-bill">Add bill</div>
-    </a>
-  </div>
-</div>
+{% macro render_field(field) %}
+	<br />
+	<b>{{ field.label }}</b><br />
+	{{ field(**kwargs)|safe }}<br />
+	<br />
+	<br />
+{% endmacro %}
+
+{% for msg in flashed_messages %}
+
+<p>{{ msg }}</p>
+
+{% endfor %}
+
+<form action="/login" method="POST">
+	<br />
+	<b>{{ forms.login.email.label }}</b><br />
+	{{ forms.login.email()|safe }}<br />
+	<br />
+	<br />
+	<b>{{ forms.login.password.label }}</b><br />
+	{{ forms.login.password()|safe }}<br />
+	<br />
+	<input type="submit">
+</form>
+
+<hr>
+<hr>
+
+<h1>Registration</h1>
+<br><br>
+<form action="/register" method="POST">
+	<b>{{ forms.registration.name.label }}</b><br />
+	{{ forms.registration.name()|safe }}<br />
+	<br>
+	<br>
+	<b>{{ forms.registration.email.label }}</b><br />
+	{{ forms.registration.email()|safe }}<br />
+	<br>
+	<br>
+	<b>{{ forms.registration.password.label }}</b><br />
+	{{ forms.registration.password()|safe }}<br />
+	<br>
+	<br>
+	<input type="submit">
+</form>
 {% endblock %}

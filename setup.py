@@ -16,6 +16,8 @@ requires = [
     'pyramid_jinja2',
     'zope.sqlalchemy',
     'waitress',
+    'passlib',
+    'wtforms'
     ]
 
 setup(name='billemall',
