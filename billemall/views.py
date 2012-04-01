@@ -212,6 +212,8 @@ def view_bill(request):
     if 'user' not in request.session:
         return HTTPFound(location='/')    
 
+    bill = DBSession.query(Bill).filter_by(id=bill_id).first()
+
     # Find the billees on this bill
     billed_users = DBSession.query(BillShare).filter_by(bill_id=bill_id).all()
 
@@ -229,8 +231,13 @@ def view_bill(request):
 
         billees.append(b)
 
+    primary = bill.primary_user.as_dict()
+    total = sum([share.amount for share in billed_users])
+
     return {
-        "billees": billees
+        "billees": billees,
+        "primary": primary,
+        "total": total
     }
 
 @view_config(route_name='user_overview', renderer='user_overview.jinja2')

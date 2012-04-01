@@ -50,7 +50,7 @@ class Bill(Base):
     # others for money. That user "paid" the bill upstream, and is
     # now requisitioning money for it.
     primary_user_id = Column(Integer, ForeignKey('user.id'))
-    pimary_user = relationship("User")
+    primary_user = relationship("User")
 
 class BillShare(Base):
     __tablename__ = "billshare"
