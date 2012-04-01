@@ -8,7 +8,7 @@ from sqlalchemy.exc import DBAPIError
 from .forms.login import LoginForm
 from .forms.registration import RegistrationForm
 from .models import DBSession, User
-    
+
 def dump_flashed_messages(request):
     msgs = []
     while request.session.peek_flash():
@@ -108,6 +108,10 @@ def overview(request):
 
 @view_config(route_name='add_bill', renderer='add_bill.jinja2')
 def add_bill(request):
+    return {"status": "ok"}
+
+@view_config(route_name='view_bill', renderer='view_bill.jinja2')
+def view_bill(request):
     return {"status": "ok"}
 
 @view_config(route_name='user_overview', renderer='user_overview.jinja2')
