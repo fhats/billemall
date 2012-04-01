@@ -1,0 +1,38 @@
+{% extends "base_loggedin.jinja2" %}
+
+{% block menu_add_bill %}class="active"{% endblock %}
+
+{% block content %}
+<h1>Random Expenses</h1>
+<h2>March 3, 2012</h2>
+
+<div class="row">
+  <div class="span6">
+    Me
+  </div>
+  <div class="span6 debit">
+    $100
+  </div>
+</div>
+
+<div class="row">
+  <div class="span6 bill-primary">
+    Fred Hatfull (primary)
+  </div>
+  <div class="span6">
+    $100
+  </div>
+</div>
+
+<div class="row">
+  <div class="span6">
+    Toby Waite
+  </div>
+  <div class="span6 debit">
+    $100
+  </div>
+</div>
+
+<div class="credit">You owe Fred Hatfull $100 from this bill.</div>
+
+{% endblock %}
