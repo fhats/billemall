@@ -10,9 +10,13 @@ body {
   text-align: right;
 }
 
+p {
+  font-size: 14px;
+}
+
 /* overview */
 
-.summary-row, .add-bill-row {
+.summary-row, .add-bill-row, .view-bill-row {
   min-height: 30px;
   line-height: 30px;
   border-top: 1px solid #eee;
