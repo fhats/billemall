@@ -1,4 +1,5 @@
 from collections import defaultdict
+import json
 from pyramid.httpexceptions import HTTPBadRequest, HTTPFound
 from pyramid.response import Response
 from pyramid.view import view_config
@@ -149,8 +150,11 @@ def add_bill(request):
         return HTTPFound(location="/")
 
     if request.method == "POST":
-        # We expect the request body to just be a list of 
-        request_body = request.json_body
+        # We expect the request body to just be a list of {name:person, amount:xxx}
+        try:
+            request_body = josn.loads(request.params['people'])
+        except (KeyError, ValueError):
+            return HTTPBadRequest("Poorly formatted request")
         
         if not isinstance(request_body, list):
             return HTTPBadRequest("Expected type list")
@@ -209,11 +213,16 @@ def view_bill(request):
     billees = []
 
     for billee in billed_users:
-        billees.append({
-            "id": billee.user_id,
-            "name": billee.user.name,
-            "email": billee.user.email
-        })
+        b = {}
+        b['name'] = billee.billshare_user_placeholder.name
+        
+        if billee.billshare_user_placeholder.claimed_user:
+            b['id'] = billee.billshare_user_placeholder.claimed_user.id
+            b['email'] = billee.billshare_user_placeholder.claimed_user.email
+        
+        b['amount'] = billee.amount
+
+        billees.append(b)
 
     return {
         "billees": billees
