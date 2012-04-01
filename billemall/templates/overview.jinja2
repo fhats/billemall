@@ -16,6 +16,7 @@
   </div>
   <form class="form-inline" id="add-bill-form" action="add_bill" method="POST">
     <div class="span4" id="people">
+      <span class="bill-person">{{ request.session['user']['name'] }}</span>
       &nbsp;
     </div>
     <div class="span3 input-prepend amount-box">
