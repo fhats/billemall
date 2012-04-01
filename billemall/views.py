@@ -43,7 +43,7 @@ def login(request):
         if not login_form.validate():
             for field, errors in login_form.errors.iteritems():
                 for error in errors:
-                    request.session.flash("Invalid input for field %s: %s" % (field, error))
+                    request.session.flash("%s: %s" % (field, error))
             return HTTPFound(location='/')
 
         proposed_user = DBSession.query(User).filter_by(email=incoming_email).first()

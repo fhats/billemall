@@ -12,11 +12,15 @@
   <br />
 {% endmacro %}
 
-{% for msg in flashed_messages %}
-
-<p>{{ msg }}</p>
-
-{% endfor %}
+{% if flashed_messages and flashed_messages[0] %}
+  <ul class="error">
+  {% for msg_list in flashed_messages %}
+    {% for msg in msg_list %}
+      <li>{{ msg }}</li>
+    {% endfor %}
+  {% endfor %}
+  </ul>
+{% endif %}
 
 <div class="row">
   <div class="span6">
