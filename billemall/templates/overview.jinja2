@@ -14,17 +14,18 @@
       <button id="add-to-bill-field-button" type="submit" class="btn">Add to bill</button>
     </form>
   </div>
-  <form class="form-inline" action="add_bill">
+  <form class="form-inline">
     <div class="span4" id="people">
       &nbsp;
     </div>
     <div class="span3 input-prepend amount-box">
       <span class="add-on">$</span>
-      <input type="text" name="amount" class="input-small" placeholder="100">
+      <input id="amount-field" type="text" name="amount" class="input-small" value="100">
     </div>
-    <div class="span2 add-bill-button">
-      <button type="submit" class="btn overview-add-bill-button">Add bill</button>
+    <div class="span2">
+      <button id="overview-add-bill-button" type="submit" class="btn">Add bill</button>
     </div>
+  </form>
 </div>
 
 <div class="row-fluid summary-row">

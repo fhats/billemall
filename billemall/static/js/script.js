@@ -1,5 +1,5 @@
 (function() {
-  var $, commas_to_the_people, split_currency_field;
+  var $, float_to_currency_string, split_currency_field, split_currency_string;
 
   $ = jQuery;
 
@@ -10,61 +10,82 @@
   });
 
   split_currency_field = function(src_text, target_class) {
-    var field, fields, items, target_text, target_value, _i, _len, _results;
+    var currency_strings, field, fields, i, _len, _results;
     fields = $("." + target_class);
-    target_value = parseInt(src_text, 10) / fields.length;
-    if (isNaN(target_value)) target_value = 0;
-    target_text = target_value.toString();
-    items = target_text.split('.');
-    items[items.length] = '00';
-    items[1] = items[1] + '0';
-    items[1] = items[1][0] + items[1][2];
-    target_text = items[0] + '.' + items[1];
+    currency_strings = split_currency_strings(src_text, fields.length);
     _results = [];
-    for (_i = 0, _len = fields.length; _i < _len; _i++) {
-      field = fields[_i];
-      _results.push((function(field) {
-        return field.value = target_text;
-      })(field));
+    for (i = 0, _len = fields.length; i < _len; i++) {
+      field = fields[i];
+      _results.push(fields[i].value = currency_strings[i]);
     }
     return _results;
   };
 
   $ = jQuery;
 
-  commas_to_the_people = function() {
-    var people;
-    people = $('#people');
-    if (people.children().length > 0) return people.append(", ");
-  };
-
   $(function() {
-    $('.add-to-bill-link').click(function(event_object) {
+    $('.add-to-bill-link').click(function(event) {
       var add_elem, elem, name;
-      add_elem = event_object.target;
+      add_elem = event.target;
       name = add_elem.getAttribute('data-name');
-      commas_to_the_people();
-      $("#people").append('<a class="person">' + name + '</a>');
+      $("#people").append('<a class="person">' + name + ' </a>');
       elem = $('#people').children().last();
-      elem.click(function(event_object) {
+      elem.click(function(event) {
         $(add_elem).show();
-        return $(event_object.target).remove();
+        return $(event.target).remove();
       });
       return $(add_elem).hide();
     });
-    return $('#add-to-bill-field-button').click(function(event_object) {
+    $('#add-to-bill-field-button').click(function(event) {
       var elem, field, name;
-      event_object.preventDefault();
+      event.preventDefault();
       field = $('#person-field')[0];
       name = field.value;
       field.value = '';
-      commas_to_the_people();
-      $('#people').append('<a class="person">' + name + '</a>');
+      $('#people').append('<a class="person">' + name + ' </a>');
       elem = $('#people').children().last();
-      return elem.click(function(event_object) {
-        return $(event_object.target).remove();
+      return elem.click(function(event) {
+        return $(event.target).remove();
       });
     });
+    return $("#overview-add-bill-button").click(function(event) {
+      var amounts, i, people, people_elems, person, _len;
+      event.preventDefault();
+      people_elems = $("#people").children();
+      people = [];
+      amounts = split_currency_string($("#amount-field")[0].value, people_elems.length);
+      console.log(amounts);
+      for (i = 0, _len = people_elems.length; i < _len; i++) {
+        person = people_elems[i];
+        people.push({
+          'name': person.textContent.substring(0, person.textContent.length - 1),
+          'amount': amounts[i]
+        });
+        i++;
+      }
+      return console.log(window.JSON.stringify(people));
+    });
   });
+
+  float_to_currency_string = function(target_value) {
+    var items, target_text;
+    target_text = target_value.toString();
+    items = target_text.split('.');
+    items[items.length] = '00';
+    items[1] = items[1] + '0';
+    items[1] = items[1][0] + items[1][2];
+    return target_text = items[0] + '.' + items[1];
+  };
+
+  split_currency_string = function(currency_string, num_fields) {
+    var strings, target_value, _;
+    target_value = parseInt(currency_string, 10) / num_fields;
+    if (isNaN(target_value)) target_value = 0;
+    strings = [];
+    for (_ = 0; 0 <= num_fields ? _ <= num_fields : _ >= num_fields; 0 <= num_fields ? _++ : _--) {
+      strings.push(float_to_currency_string(target_value));
+    }
+    return strings;
+  };
 
 }).call(this);
