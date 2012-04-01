@@ -54,6 +54,8 @@ class Bill(Base):
 
     total = Column(Integer)
 
+    description = Column(Text)
+
 class BillShare(Base):
     __tablename__ = "billshare"
     id = Column(Integer, primary_key=True)

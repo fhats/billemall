@@ -50,13 +50,15 @@ def main(argv=sys.argv):
         steve_holder = BillShareUserPlaceholder(user=other_user)
         DBSession.add(steve_holder)
 
-        # Add a test bill
-        bill = Bill(primary_user_id=fred_holder.id)
-        DBSession.add(bill)
-
         DBSession.flush()
         DBSession.refresh(fred_holder)
         DBSession.refresh(steve_holder)
+
+        # Add a test bill
+        bill = Bill(primary_user_id=fred_holder.id, description="Sexy times and stuff")
+        DBSession.add(bill)
+
+        DBSession.flush()
         DBSession.refresh(bill)
 
         bs = BillShare(bill_id=bill.id, billshare_user_placeholder_id=steve_holder.id, amount=300)

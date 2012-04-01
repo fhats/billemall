@@ -5,6 +5,7 @@ from pyramid.response import Response
 from pyramid.view import view_config
 import transaction
 
+from sqlalchemy import or_
 from sqlalchemy.exc import DBAPIError
 
 from .forms.login import LoginForm
@@ -135,7 +136,7 @@ def overview(request):
             if share.billshare_user_placeholder.claimed_user_id == request.session['user']['id']:
                 continue
             
-            if bill.primary_user_id == request.session['user']['id']:
+            if bill.primary_user.claimed_user_id == request.session['user']['id']:
                 users[share.billshare_user_placeholder.name] += share.amount
             else:
                 users[share.billshare_user_placeholder.name] -= share.amount
@@ -236,10 +237,8 @@ def view_bill(request):
     for billee in billed_users:
         b = {}
         b['name'] = billee.billshare_user_placeholder.name
-        
         b['id'] = billee.billshare_user_placeholder.id
-        
-        b['amount'] = "%0.2f" % (billee.amount / 100)
+        b['amount'] = cents_to_dollar_str(billee.amount)
 
         billees.append(b)
 
@@ -253,15 +252,44 @@ def view_bill(request):
     return {
         "billees": billees,
         "primary": primary,
-        "total": "%0.2f" % (total / 100)
+        "total": cents_to_dollar_str(total)
     }
 
 @view_config(route_name='user_overview', renderer='user_overview.jinja2')
 def user_overview(request):
+    if 'user' not in request.session:
+        return HTTPFound(location='/')
 
+    user_id = int(request.matchdict['id'])
 
-    return {"status": "ok"}
+    if user_id == request.session['user']['id']:
+        return HTTPFound(location='/overview')
+
+    shares = DBSession.query(BillShare).\
+        join(BillShareUserPlaceholder).\
+        filter(
+            or_(BillShareUserPlaceholder.claimed_user_id == request.session['user']['id'],
+                BillShareUserPlaceholder.claimed_user_id == user_id)
+        ).all()
+
+    my_shares = [{
+        "description": share.bill.description,
+        "amount": share.amount,
+    } for share in shares if share.bill.primary_user_id == request.session['user']['id']]
+
+    their_shares = [{
+        "description": share.bill.description,
+        "amount": share.amount,
+    } for share in shares if share.bill.primary_user_id == user_id]
+
+    return {
+        "my_shares": my_shares,
+        "their_shares": their_shares
+    }
 
 @view_config(route_name='account', renderer='account.jinja2')
 def account(request):
     return {"status": "ok"}
+
+def cents_to_dollar_str(cents):
+    return "%0.2f" % (cents / 100)
