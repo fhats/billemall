@@ -165,7 +165,7 @@ def add_bill(request):
         # This shit is all done in a single transaction in order to have nice ROLLBACK
         # semantics if any one of these transactions fails.
         with transaction.manager:
-            bill = Bill(primary_user_id=request.session['user']['id'])
+            bill = Bill(primary_user_id=request.session['user']['id'], total=bill_total)
             DBSession.add(bill)
 
             DBSession.flush()
@@ -232,7 +232,7 @@ def view_bill(request):
         billees.append(b)
 
     primary = bill.primary_user.as_dict()
-    total = sum([share.amount for share in billed_users])
+    total = bill.total
 
     total /= 100
 
